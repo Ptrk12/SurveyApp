@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "+ukXde1yIlDVi7st47WQsdAHDrvxlVda1e48pmlbDa28M+eExnvlcpHtiORsyY6gQC8Q2RytUOGukKZEn46eoQ==",
+  "dgSpecHash": "oeKBMIEY7g5z7ih6Nskc4obPXdK2R6hntKTBjij/QNVZF1tfDZJDBTh6pj/1WUS+Y37XPdFXUNQbyfm+inNVdQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Admin\\source\\repos\\SurveyApplication\\ApplicationCore\\ApplicationCore.csproj",
+  "projectFilePath": "C:\\Users\\Admin\\Desktop\\survey\\SurveyApp\\ApplicationCore\\ApplicationCore.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

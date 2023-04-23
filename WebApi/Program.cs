@@ -1,5 +1,8 @@
 
 using Infrastructure;
+using Infrastructure.Managers;
+using Infrastructure.Repositories;
+using System.Text.Json.Serialization;
 
 namespace SurveyApp
 {
@@ -15,8 +18,18 @@ namespace SurveyApp
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-
+            ///
             builder.Services.AddDbContext<SurveyDbContext>();
+            builder.Services.AddScoped<ISurveyUserManager, SurveyUserManager>();
+
+
+            //TEST TEST TEST
+            builder.Services.AddControllers().AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+                options.JsonSerializerOptions.WriteIndented = true;
+            });
+
 
             var app = builder.Build();
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ApplicationCore.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ApplicationCore.Models
 {
-    public class SurveyQuestionUserAnswer
+    public class SurveyQuestionUserAnswer:IIdentity<int>
     {
         public int Id
         {

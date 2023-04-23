@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "30W3d9NynMDguLa6Whg9CFweApz4VsjlZfqcMyIdGo9pK4ZeTjqRoR+AIPln7Tp/xz4MOioRt0P2Gbie3UrLag==",
+  "dgSpecHash": "pb3B9dgVsJrhO7AkmadYXU9js43qgcnp5mY8esbgOmuDbKqjX5VkLj2H40M7c5cNiIkcbzUxfE6HJ62lvVdTHA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Admin\\source\\repos\\SurveyApplication\\Infrastructure\\Infrastructure.csproj",
+  "projectFilePath": "C:\\Users\\Admin\\Desktop\\survey\\SurveyApp\\Infrastructure\\Infrastructure.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Admin\\.nuget\\packages\\azure.core\\1.24.0\\azure.core.1.24.0.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\azure.identity\\1.6.0\\azure.identity.1.6.0.nupkg.sha512",
