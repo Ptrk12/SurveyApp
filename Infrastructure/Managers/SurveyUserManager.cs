@@ -1,5 +1,6 @@
 ﻿using ApplicationCore.Models;
 using Infrastructure.Entities;
+using Infrastructure.Mappers;
 using Infrastructure.Repositories;
 using System;
 using System.Collections.Generic;
@@ -10,37 +11,38 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Managers
 {
-    public interface ISurveyUserManager
+    public class SurveyUserManager:ISurveyUserManager
     {
-        ISurveyRepository SurveyRepository { get; }
-        void Save();
-    }
-    public class SurveyUserManager : ISurveyUserManager
-    {
-        private SurveyDbContext _context;
         private ISurveyRepository _surveyRepository;
 
-        public SurveyUserManager(SurveyDbContext context)
+        public SurveyUserManager(ISurveyRepository surveyRepository)
         {
-            _context = context;
+            _surveyRepository = surveyRepository;
         }
 
-        public ISurveyRepository SurveyRepository
+        public async Task<List<Survey>> GetAll()
         {
-            get
-            {
-                if(_surveyRepository == null)
-                {
-                    _surveyRepository = new SurveyRepository(_context);
-                }
+            var items = await _surveyRepository.GetSurveysInclude();
+            var result = items.Select(x => SurveyMapper.FromEntityToSurvey(x)).ToList();
+            return result;
+        }
 
-                return _surveyRepository;
+        public async Task<bool> RemoweSurveyById(int id)
+        {
+            try
+            {
+                await _surveyRepository.RemoveById(id);
+                return true;
+            }catch (Exception ex)
+            {
+                return false;
             }
         }
+    }
 
-        public void Save()
-        {
-            _context.SaveChanges();
-        }
+    public interface ISurveyUserManager
+    {
+        Task<List<Survey>> GetAll();
+        Task<bool> RemoweSurveyById(int id);
     }
 }

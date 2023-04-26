@@ -1,6 +1,7 @@
 ﻿using ApplicationCore.Commons;
 using ApplicationCore.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,19 +49,10 @@ namespace Infrastructure.Repositories.Generic
         {
             return await _context.Set<T>().FindAsync(id);
         }
-
-        public async Task<bool> RemoveById(K id)
+        public async Task RemoveById(K id)
         {
-            try
-            {
-                var entity = await _context.Set<T>().FindAsync(id);
-                _context.Set<T>().Remove(entity);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
+            var entity = await _context.Set<T>().FindAsync(id);
+            _context.Set<T>().Remove(entity);         
         }
 
         public bool Update(K id, T item)

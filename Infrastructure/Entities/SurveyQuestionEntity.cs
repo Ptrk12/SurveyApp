@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ApplicationCore.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Entities
 {
-    public class SurveyQuestionEntity
+    public class SurveyQuestionEntity : IIdentity<int>
     {
         public int Id { get; set; }
         public string Type { get; set; }

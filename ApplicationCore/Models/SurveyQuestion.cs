@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ApplicationCore.Models
 {
-    public class SurveyQuestion:IIdentity<int>
+    public class SurveyQuestion
     {
         public int Id { get; set; }
         public string Type { get; set; }

@@ -1,4 +1,5 @@
-﻿using ApplicationCore.Models;
+﻿using ApplicationCore.Interfaces;
+using ApplicationCore.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Entities
 {
-    public class SurveyQuestionUserAnswerEntity
+    public class SurveyQuestionUserAnswerEntity : IIdentity<int>
     {
         public int Id { get; set; }
         public int SurveyId { get; set; }

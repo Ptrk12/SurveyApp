@@ -1,4 +1,5 @@
 ﻿using ApplicationCore.Interfaces;
+using Microsoft.EntityFrameworkCore.Query;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,7 @@ namespace ApplicationCore.Commons
         Task<List<T>> GetAllAsync();
         Task<IEnumerable<T>> GetAllAsync(params Expression<Func<T, object>>[] includeProp);
         Task<T?> Add (T item);
-        Task<bool> RemoveById(K id);
+        Task RemoveById(K id);
         bool Update (K id, T item);
     }
 }

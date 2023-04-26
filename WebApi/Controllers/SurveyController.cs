@@ -7,11 +7,11 @@ namespace SurveyApp.Controllers
 {
     [Route("api/test")]
     [ApiController]
-    public class Test : ControllerBase
+    public class SurveyController : ControllerBase
     {
         private ISurveyUserManager _userManager;
 
-        public Test(ISurveyUserManager userManager)
+        public SurveyController(ISurveyUserManager userManager)
         {
             _userManager = userManager;
         }
@@ -19,16 +19,16 @@ namespace SurveyApp.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var entities = await _userManager.SurveyRepository.GetAllAsync(x=>x.SurveyQuestions);
-
-            //var items = entities.Select(x => new Survey()
-            //{
-            //    Id = x.Id,
-            //    Title = x.Title,
-            //    Status = x.Status
-            //});
-
+            var entities = await _userManager.GetAll();
             return Ok(entities);
+        }
+
+        [HttpDelete]
+        [Route("{id}")]
+        public async Task<IActionResult> DeleteById(int id)
+        {
+            var deleted = _userManager.RemoweSurveyById(id);
+            return deleted.Result == true ? Ok(deleted) : NotFound();
         }
     }
 }

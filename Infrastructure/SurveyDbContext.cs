@@ -20,7 +20,7 @@ namespace Infrastructure
             base.OnConfiguring(optionsBuilder);
 
             optionsBuilder.UseSqlServer(
-                "Data Source=DESKTOP-QR36UPA;Initial Catalog=SurveyApp;Integrated Security=True;Pooling=False;TrustServerCertificate=True");
+                "Data Source=DESKTOP-BORRVIJ;Initial Catalog=SurveyApp;Integrated Security=True;Pooling=False;TrustServerCertificate=True");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -32,21 +32,21 @@ namespace Infrastructure
 
             modelBuilder.Entity<SurveyQuestionAnswerEntity>()
                 .HasData(
-                new SurveyQuestionAnswerEntity() { Id = 1, Answer = new string[] { "4" } },
-                new SurveyQuestionAnswerEntity() { Id = 2, Answer = new string[] { "7" } },
-                new SurveyQuestionAnswerEntity() { Id = 3, Answer = new string[] { "9" } },
-                new SurveyQuestionAnswerEntity() { Id = 4, Answer = new string[] { "Park", "Forest" } },
-                new SurveyQuestionAnswerEntity() { Id = 5, Answer = new string[] { "Cycling", "Running" } },
-                new SurveyQuestionAnswerEntity() { Id = 6, Answer = new string[] { "Pizza", "Burger" } },
-                new SurveyQuestionAnswerEntity() { Id = 7, Answer = new string[] { "Patryk" } },
-                new SurveyQuestionAnswerEntity() { Id = 8, Answer = new string[] { "300km" } },
-                new SurveyQuestionAnswerEntity() { Id = 9, Answer = new string[] { "12" } });
+                new SurveyQuestionAnswerEntity() { Id = 1, Answer = "4" },
+                new SurveyQuestionAnswerEntity() { Id = 2, Answer = "7" },
+                new SurveyQuestionAnswerEntity() { Id = 3, Answer = "9" },
+                new SurveyQuestionAnswerEntity() { Id = 4, Answer = "Park Forest" },
+                new SurveyQuestionAnswerEntity() { Id = 5, Answer = "Cycling Running" },
+                new SurveyQuestionAnswerEntity() { Id = 6, Answer = "Pizza Burger" },
+                new SurveyQuestionAnswerEntity() { Id = 7, Answer = "Patryk" },
+                new SurveyQuestionAnswerEntity() { Id = 8, Answer = "300km" },
+                new SurveyQuestionAnswerEntity() { Id = 9, Answer = "12" });
 
-            modelBuilder.Entity<SurveyQuestionAnswerEntity>()
-                .Property(e => e.Answer)
-                .HasConversion(
-                v => string.Join(',', v),
-                v => v.Split(',', StringSplitOptions.RemoveEmptyEntries));
+            //modelBuilder.Entity<SurveyQuestionAnswerEntity>()
+            //    .Property(e => e.Answer)
+            //    .HasConversion(
+            //    v => string.Join(',', v),
+            //    v => v.Split(',', StringSplitOptions.RemoveEmptyEntries));
 
             modelBuilder.Entity<SurveyQuestionEntity>()
                 .HasData(

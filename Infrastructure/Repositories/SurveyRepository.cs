@@ -3,10 +3,12 @@ using ApplicationCore.Commons;
 using ApplicationCore.Models;
 using Infrastructure.Entities;
 using Infrastructure.Repositories.Generic;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,9 +16,22 @@ namespace Infrastructure.Repositories
 {
     public class SurveyRepository:GenericRepository<SurveyEntity, int>, ISurveyRepository
     {
-        public SurveyRepository(SurveyDbContext _context): base(_context) { }
+        private readonly SurveyDbContext _context;
+        public SurveyRepository(SurveyDbContext context): base(context) 
+        {
+            _context = context;
+        }
+
+        public async Task<List<SurveyEntity>> GetSurveysInclude()
+        {
+            var result = _context.Surveys.Include(x => x.SurveyQuestions).ThenInclude(x => x.SurveyQuestionAnswers).ToList();               
+            return result;
+        }
 
     }
 
-    public interface ISurveyRepository : IGenericRepository<SurveyEntity, int> { }
+    public interface ISurveyRepository : IGenericRepository<SurveyEntity, int> 
+    {
+        Task<List<SurveyEntity>> GetSurveysInclude();
+    }
 }

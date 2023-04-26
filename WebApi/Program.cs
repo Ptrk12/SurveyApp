@@ -21,6 +21,7 @@ namespace SurveyApp
             ///
             builder.Services.AddDbContext<SurveyDbContext>();
             builder.Services.AddScoped<ISurveyUserManager, SurveyUserManager>();
+            builder.Services.AddScoped<ISurveyRepository, SurveyRepository>();
 
 
             //TEST TEST TEST

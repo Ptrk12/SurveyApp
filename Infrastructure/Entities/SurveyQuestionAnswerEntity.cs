@@ -9,7 +9,7 @@ namespace Infrastructure.Entities
     public class SurveyQuestionAnswerEntity
     {
         public int Id { get; set; }
-        public string[] Answer { get; set; }
+        public string Answer { get; set; }
         public List<SurveyQuestionEntity> SurveyQuestions { get; set;}
     }
 }
