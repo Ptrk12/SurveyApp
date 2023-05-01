@@ -24,8 +24,27 @@ namespace Infrastructure.Repositories
 
         public async Task<List<SurveyEntity>> GetSurveysInclude()
         {
-            var result = _context.Surveys.Include(x => x.SurveyQuestions).ThenInclude(x => x.SurveyQuestionAnswers).ToList();               
+            var result = _context.Surveys
+                .Include(x => x.SurveyQuestions)
+                .ThenInclude(x => x.SurveyQuestionAnswers)
+                .ToList();         
+            
             return result;
+        }
+
+        public bool CheckIfSurveyHasAnswers(int surveyId)
+        {
+            var result = _context.SurveyAnswers
+                .Include(x => x.SurveyQuestions)
+                .ThenInclude(x => x.Surveys)
+                .Where(x => x.Id == surveyId)
+                .Count();
+
+            if(result != 0)
+            {
+                return true;
+            }
+            return false;
         }
 
     }
@@ -33,5 +52,6 @@ namespace Infrastructure.Repositories
     public interface ISurveyRepository : IGenericRepository<SurveyEntity, int> 
     {
         Task<List<SurveyEntity>> GetSurveysInclude();
+        bool CheckIfSurveyHasAnswers(int surveyId);
     }
 }

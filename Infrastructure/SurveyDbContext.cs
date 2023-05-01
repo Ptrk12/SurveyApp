@@ -1,4 +1,6 @@
 ﻿using Infrastructure.Entities;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -8,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure
 {
-    public class SurveyDbContext:DbContext
+    public class SurveyDbContext:IdentityDbContext<UserEntity,UserRoleEntity,int>
     {
         public DbSet<SurveyEntity> Surveys { get; set; }
         public DbSet<SurveyQuestionEntity> SurveyQuestions { get; set; }
@@ -20,7 +22,7 @@ namespace Infrastructure
             base.OnConfiguring(optionsBuilder);
 
             optionsBuilder.UseSqlServer(
-                "Data Source=DESKTOP-BORRVIJ;Initial Catalog=SurveyApp;Integrated Security=True;Pooling=False;TrustServerCertificate=True");
+                "Data Source=DESKTOP-QR36UPA;Initial Catalog=SurveyApp;Integrated Security=True;Pooling=False;TrustServerCertificate=True");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -40,7 +42,8 @@ namespace Infrastructure
                 new SurveyQuestionAnswerEntity() { Id = 6, Answer = "Pizza Burger" },
                 new SurveyQuestionAnswerEntity() { Id = 7, Answer = "Patryk" },
                 new SurveyQuestionAnswerEntity() { Id = 8, Answer = "300km" },
-                new SurveyQuestionAnswerEntity() { Id = 9, Answer = "12" });
+                new SurveyQuestionAnswerEntity() { Id = 9, Answer = "12" },
+                new SurveyQuestionAnswerEntity() { Id = 10, Answer = "444" });
 
             //modelBuilder.Entity<SurveyQuestionAnswerEntity>()
             //    .Property(e => e.Answer)
@@ -142,7 +145,8 @@ namespace Infrastructure
                     new { SurveyQuestionAnswersId = 6, SurveyQuestionsId = 6 },
                     new { SurveyQuestionAnswersId = 7, SurveyQuestionsId = 7 },
                     new { SurveyQuestionAnswersId = 8, SurveyQuestionsId = 8 },
-                    new { SurveyQuestionAnswersId = 9, SurveyQuestionsId = 9 }
+                    new { SurveyQuestionAnswersId = 9, SurveyQuestionsId = 9 },
+                    new { SurveyQuestionAnswersId = 10, SurveyQuestionsId = 1 }
                     ));
         }
     }

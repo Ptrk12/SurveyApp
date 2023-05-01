@@ -55,23 +55,12 @@ namespace Infrastructure.Repositories.Generic
             _context.Set<T>().Remove(entity);         
         }
 
-        public bool Update(K id, T item)
+        public void Update(K id, T item)
         {
-            try
+            var foundEntity = _context.Set<T>().Find(id);
+            if (foundEntity.Id.CompareTo(item.Id) == 0 && foundEntity != null)
             {
-                var foundEntity = _context.Set<T>().Find(id);
-                if (foundEntity.Id.CompareTo(item.Id) == 0 && foundEntity != null)
-                {
-                    _context.Set<T>().Update(item);
-                    return true;
-                }
-
-                return false;
-
-            }
-            catch (Exception ex)
-            {
-                return false;
+                   _context.Set<T>().Update(item);
             }
         }
     }

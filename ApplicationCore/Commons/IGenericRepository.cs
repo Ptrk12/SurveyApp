@@ -16,6 +16,6 @@ namespace ApplicationCore.Commons
         Task<IEnumerable<T>> GetAllAsync(params Expression<Func<T, object>>[] includeProp);
         Task<T?> Add (T item);
         Task RemoveById(K id);
-        bool Update (K id, T item);
+        void Update (K id, T item);
     }
 }

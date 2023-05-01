@@ -2,6 +2,7 @@
 using Infrastructure;
 using Infrastructure.Managers;
 using Infrastructure.Repositories;
+using SurveyApp.Configuration;
 using System.Text.Json.Serialization;
 
 namespace SurveyApp
@@ -16,21 +17,18 @@ namespace SurveyApp
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
             ///
             builder.Services.AddDbContext<SurveyDbContext>();
-            builder.Services.AddScoped<ISurveyUserManager, SurveyUserManager>();
+            builder.Services.AddScoped<ISurveyManager, SurveyManager>();
             builder.Services.AddScoped<ISurveyRepository, SurveyRepository>();
+            ///
 
-
-            //TEST TEST TEST
-            builder.Services.AddControllers().AddJsonOptions(options =>
-            {
-                options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
-                options.JsonSerializerOptions.WriteIndented = true;
-            });
-
+            builder.Services.AddSingleton<JwtSettings>();
+            builder.Services.ConfigureIdentity();
+            builder.Services.ConfigureJWT(new JwtSettings(builder.Configuration));
+            builder.Services.ConfigureCors();
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.ConfigureSwagger();
 
             var app = builder.Build();
 
@@ -47,7 +45,7 @@ namespace SurveyApp
 
 
             app.MapControllers();
-
+            app.AddUsers();
             app.Run();
         }
     }

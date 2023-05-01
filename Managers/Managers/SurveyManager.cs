@@ -1,5 +1,5 @@
-﻿using ApplicationCore.Models;
-using Infrastructure.Entities;
+﻿
+using ApplicationCore.Models;
 using Infrastructure.Mappers;
 using Infrastructure.Repositories;
 using System;
@@ -11,11 +11,11 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Managers
 {
-    public class SurveyUserManager:ISurveyUserManager
+    public class SurveyManager:ISurveyManager
     {
         private ISurveyRepository _surveyRepository;
 
-        public SurveyUserManager(ISurveyRepository surveyRepository)
+        public SurveyManager(ISurveyRepository surveyRepository)
         {
             _surveyRepository = surveyRepository;
         }
@@ -31,16 +31,21 @@ namespace Infrastructure.Managers
         {
             try
             {
-                await _surveyRepository.RemoveById(id);
+                if(_surveyRepository.CheckIfSurveyHasAnswers(id))
+                {
+                    await _surveyRepository.RemoveById(id);
+                    return false;
+                }
                 return true;
-            }catch (Exception ex)
+            }
+            catch (Exception)
             {
                 return false;
             }
         }
     }
 
-    public interface ISurveyUserManager
+    public interface ISurveyManager
     {
         Task<List<Survey>> GetAll();
         Task<bool> RemoweSurveyById(int id);

@@ -1,5 +1,8 @@
 ﻿using ApplicationCore.Models;
+using Infrastructure.Entities;
 using Infrastructure.Managers;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,26 +12,28 @@ namespace SurveyApp.Controllers
     [ApiController]
     public class SurveyController : ControllerBase
     {
-        private ISurveyUserManager _userManager;
+        private ISurveyManager _surveyManager;
 
-        public SurveyController(ISurveyUserManager userManager)
+        public SurveyController(ISurveyManager userManager)
         {
-            _userManager = userManager;
+            _surveyManager = userManager;
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> GetAll()
         {
-            var entities = await _userManager.GetAll();
+            var entities = await _surveyManager.GetAll();
             return Ok(entities);
         }
 
         [HttpDelete]
-        [Route("{id}")]
-        public async Task<IActionResult> DeleteById(int id)
+        [Route("{surveyId}")]
+        [Authorize(Policy = "Bearer")]
+        public async Task<IActionResult> DeleteById(int surveyId)
         {
-            var deleted = _userManager.RemoweSurveyById(id);
-            return deleted.Result == true ? Ok(deleted) : NotFound();
+            var deleted = _surveyManager.RemoweSurveyById(surveyId);
+            return deleted.Result == true ? Ok(deleted) : BadRequest();
         }
     }
 }
