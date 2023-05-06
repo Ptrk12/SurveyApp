@@ -15,7 +15,7 @@ namespace Infrastructure
         public DbSet<SurveyEntity> Surveys { get; set; }
         public DbSet<SurveyQuestionEntity> SurveyQuestions { get; set; }
         public DbSet<SurveyQuestionUserAnswerEntity> UserAnswers { get; set; }
-        public DbSet<SurveyEntity> SurveyAnswers { get; set; }
+        public DbSet<SurveyQuestionAnswerEntity> SurveyAnswers { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -50,6 +50,11 @@ namespace Infrastructure
             //    .HasConversion(
             //    v => string.Join(',', v),
             //    v => v.Split(',', StringSplitOptions.RemoveEmptyEntries));
+
+            modelBuilder.Entity<UserEntity>()
+                .HasMany(x => x.Surveys)
+                .WithOne(x => x.User)
+                .HasForeignKey(x => x.UserId);
 
             modelBuilder.Entity<SurveyQuestionEntity>()
                 .HasData(
@@ -108,13 +113,25 @@ namespace Infrastructure
                     Question = "4 x 3 ?"
                 });
 
+            modelBuilder.Entity<UserEntity>()
+                .HasData(
+                new UserEntity()
+                {
+                    Id = 4,
+                    UserName = "Test",
+                    Email = "test@mail.com",
+                    PasswordHash = "AEg99Eos3k8KJhs+Ikuc0tbwU/rsXS9wnSYCLQ1Eu8CmMPZ4ddY7aWB+cZDXb/ukqA=="
+                }
+                );
+
             modelBuilder.Entity<SurveyEntity>()
                 .HasData(
                 new SurveyEntity()
                 {
                     Id = 1,
                     Status = "public",
-                    Title = "My first survey"
+                    Title = "My first survey",
+                    UserId=4
                 });
 
             modelBuilder.Entity<SurveyEntity>()

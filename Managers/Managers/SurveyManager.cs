@@ -1,5 +1,7 @@
 ﻿
+using ApplicationCore.Dto;
 using ApplicationCore.Models;
+using Infrastructure.Entities;
 using Infrastructure.Mappers;
 using Infrastructure.Repositories;
 using System;
@@ -14,10 +16,27 @@ namespace Infrastructure.Managers
     public class SurveyManager:ISurveyManager
     {
         private ISurveyRepository _surveyRepository;
+        private IUserRepository _userRepository;
 
-        public SurveyManager(ISurveyRepository surveyRepository)
+        public SurveyManager(
+            ISurveyRepository surveyRepository,
+            IUserRepository userRepository)
         {
             _surveyRepository = surveyRepository;
+            _userRepository = userRepository;
+        }
+
+        public async Task<bool> CreateNewSurvey(CreateSurveyDto survey)
+        {
+            var entityToAdd = new SurveyEntity()
+            {
+                Title = survey.Title,
+                Status = survey.Status,
+                UserId = survey.UserId,
+            };
+            await _surveyRepository.Add(entityToAdd);
+            await _surveyRepository.Save();
+            return true;
         }
 
         public async Task<List<Survey>> GetAll()
@@ -31,12 +50,12 @@ namespace Infrastructure.Managers
         {
             try
             {
-                if(_surveyRepository.CheckIfSurveyHasAnswers(id))
+                if(!_surveyRepository.CheckIfSurveyHasAnswers(id) && _userRepository.CheckIfItUserSurvey(id))
                 {
                     await _surveyRepository.RemoveById(id);
-                    return false;
+                    return true;
                 }
-                return true;
+                return false;
             }
             catch (Exception)
             {
@@ -49,5 +68,6 @@ namespace Infrastructure.Managers
     {
         Task<List<Survey>> GetAll();
         Task<bool> RemoweSurveyById(int id);
+        Task<bool> CreateNewSurvey(CreateSurveyDto survey);
     }
 }

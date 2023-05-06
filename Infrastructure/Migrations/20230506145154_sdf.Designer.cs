@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(SurveyDbContext))]
-    [Migration("20230430145931_identityAdded")]
-    partial class identityAdded
+    [Migration("20230506145154_sdf")]
+    partial class sdf
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -41,16 +41,22 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.ToTable("SurveyEntity");
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Surveys");
 
                     b.HasData(
                         new
                         {
                             Id = 1,
                             Status = "public",
-                            Title = "My first survey"
+                            Title = "My first survey",
+                            UserId = 4
                         });
                 });
 
@@ -68,7 +74,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SurveyQuestionAnswerEntity");
+                    b.ToTable("SurveyAnswers");
 
                     b.HasData(
                         new
@@ -294,6 +300,21 @@ namespace Infrastructure.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 4,
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "55ba26d4-f8e2-41c3-9a18-681d57316001",
+                            Email = "test@mail.com",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
+                            PasswordHash = "AEg99Eos3k8KJhs+Ikuc0tbwU/rsXS9wnSYCLQ1Eu8CmMPZ4ddY7aWB+cZDXb/ukqA==",
+                            PhoneNumberConfirmed = false,
+                            TwoFactorEnabled = false,
+                            UserName = "Test"
+                        });
                 });
 
             modelBuilder.Entity("Infrastructure.Entities.UserRoleEntity", b =>
@@ -558,6 +579,17 @@ namespace Infrastructure.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Infrastructure.Entities.SurveyEntity", b =>
+                {
+                    b.HasOne("Infrastructure.Entities.UserEntity", "User")
+                        .WithMany("Surveys")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Infrastructure.Entities.SurveyQuestionUserAnswerEntity", b =>
                 {
                     b.HasOne("Infrastructure.Entities.SurveyQuestionEntity", "SurveyQuestion")
@@ -648,6 +680,11 @@ namespace Infrastructure.Migrations
                         .HasForeignKey("SurveyQuestionsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Infrastructure.Entities.UserEntity", b =>
+                {
+                    b.Navigation("Surveys");
                 });
 #pragma warning restore 612, 618
         }

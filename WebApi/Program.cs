@@ -21,6 +21,7 @@ namespace SurveyApp
             builder.Services.AddDbContext<SurveyDbContext>();
             builder.Services.AddScoped<ISurveyManager, SurveyManager>();
             builder.Services.AddScoped<ISurveyRepository, SurveyRepository>();
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
             ///
 
             builder.Services.AddSingleton<JwtSettings>();

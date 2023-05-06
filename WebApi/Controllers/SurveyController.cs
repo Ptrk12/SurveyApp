@@ -1,4 +1,5 @@
-﻿using ApplicationCore.Models;
+﻿using ApplicationCore.Dto;
+using ApplicationCore.Models;
 using Infrastructure.Entities;
 using Infrastructure.Managers;
 using Microsoft.AspNet.Identity;
@@ -34,6 +35,13 @@ namespace SurveyApp.Controllers
         {
             var deleted = _surveyManager.RemoweSurveyById(surveyId);
             return deleted.Result == true ? Ok(deleted) : BadRequest();
+        }
+
+        [HttpPost("surveyadd")]
+        public async Task<IActionResult> CreateNewSurvey(CreateSurveyDto dto)
+        {
+            await _surveyManager.CreateNewSurvey(dto);
+            return Ok();
         }
     }
 }

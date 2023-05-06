@@ -11,5 +11,6 @@ namespace Infrastructure.Entities
 {
     public class UserEntity:IdentityUser<int>
     {
+        public virtual ICollection<SurveyEntity>? Surveys { get; set;}
     }
 }

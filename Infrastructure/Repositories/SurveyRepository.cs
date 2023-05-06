@@ -47,11 +47,16 @@ namespace Infrastructure.Repositories
             return false;
         }
 
+        public async Task Save()
+        {
+            await _context.SaveChangesAsync();
+        }
     }
 
     public interface ISurveyRepository : IGenericRepository<SurveyEntity, int> 
     {
         Task<List<SurveyEntity>> GetSurveysInclude();
         bool CheckIfSurveyHasAnswers(int surveyId);
+        Task Save();
     }
 }

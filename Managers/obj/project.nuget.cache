@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "/Nq78+S+O6wWtKLb3g28+igeQ5482GQap0DArmCCi/BF+bmB1YR0XwXLhTw9gskMhOQQ9N2SULn3KTHz+wI2yg==",
+  "dgSpecHash": "eea7JvIq9+qS9foSjIVshyWP3QzeO6IFgC2Jqq16a3iUkV2Rh8ukcdlLSkTExf9osJWJ7cGqXRvWmKRrE17Zzg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Admin\\Desktop\\SurveyApp\\Managers\\Managers.csproj",
+  "projectFilePath": "C:\\Users\\Admin\\Desktop\\sfdsdfsdf\\Managers\\Managers.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Admin\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",
