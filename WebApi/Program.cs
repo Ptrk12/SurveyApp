@@ -2,6 +2,7 @@
 using Infrastructure;
 using Infrastructure.Managers;
 using Infrastructure.Repositories;
+using Managers.Managers;
 using SurveyApp.Configuration;
 using System.Text.Json.Serialization;
 
@@ -22,6 +23,8 @@ namespace SurveyApp
             builder.Services.AddScoped<ISurveyManager, SurveyManager>();
             builder.Services.AddScoped<ISurveyRepository, SurveyRepository>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
+            builder.Services.AddScoped<ISurveyQuestionRepository, SurveyQuestionRepository>();
+            builder.Services.AddScoped<ISurveyQuestionManager, SurveyQuestionManager>();
             ///
 
             builder.Services.AddSingleton<JwtSettings>();

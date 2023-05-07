@@ -55,6 +55,11 @@ namespace Infrastructure.Repositories.Generic
             _context.Set<T>().Remove(entity);         
         }
 
+        public async Task Save()
+        {
+            await _context.SaveChangesAsync();
+        }
+
         public void Update(K id, T item)
         {
             var foundEntity = _context.Set<T>().Find(id);

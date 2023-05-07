@@ -28,15 +28,21 @@ namespace Infrastructure.Managers
 
         public async Task<bool> CreateNewSurvey(CreateSurveyDto survey)
         {
-            var entityToAdd = new SurveyEntity()
+            try
             {
-                Title = survey.Title,
-                Status = survey.Status,
-                UserId = survey.UserId,
-            };
-            await _surveyRepository.Add(entityToAdd);
-            await _surveyRepository.Save();
-            return true;
+                var entityToAdd = new SurveyEntity()
+                {
+                    Title = survey.Title,
+                    Status = survey.Status,
+                    UserId = survey.UserId,
+                };
+                await _surveyRepository.Add(entityToAdd);
+                await _surveyRepository.Save();
+                return true;
+            }catch (Exception) 
+            {
+                return false;
+            }
         }
 
         public async Task<List<Survey>> GetAll()

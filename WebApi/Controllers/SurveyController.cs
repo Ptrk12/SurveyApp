@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace SurveyApp.Controllers
 {
-    [Route("api/test")]
+    [Route("api/survey")]
     [ApiController]
     public class SurveyController : ControllerBase
     {
@@ -33,15 +33,15 @@ namespace SurveyApp.Controllers
         [Authorize(Policy = "Bearer")]
         public async Task<IActionResult> DeleteById(int surveyId)
         {
-            var deleted = _surveyManager.RemoweSurveyById(surveyId);
-            return deleted.Result == true ? Ok(deleted) : BadRequest();
+            var deleted = await _surveyManager.RemoweSurveyById(surveyId);
+            return deleted == true ? Ok(deleted) : BadRequest();
         }
 
-        [HttpPost("surveyadd")]
+        [HttpPost]
         public async Task<IActionResult> CreateNewSurvey(CreateSurveyDto dto)
         {
-            await _surveyManager.CreateNewSurvey(dto);
-            return Ok();
+            var result = await _surveyManager.CreateNewSurvey(dto);
+            return result == true? Ok(result) : BadRequest();   
         }
     }
 }

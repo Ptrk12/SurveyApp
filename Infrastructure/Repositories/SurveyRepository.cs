@@ -22,12 +22,13 @@ namespace Infrastructure.Repositories
             _context = context;
         }
 
+        //TO be refactored
         public async Task<List<SurveyEntity>> GetSurveysInclude()
         {
-            var result = _context.Surveys
+            var result = await _context.Surveys
                 .Include(x => x.SurveyQuestions)
                 .ThenInclude(x => x.SurveyQuestionAnswers)
-                .ToList();         
+                .ToListAsync();         
             
             return result;
         }
@@ -46,17 +47,11 @@ namespace Infrastructure.Repositories
             }
             return false;
         }
-
-        public async Task Save()
-        {
-            await _context.SaveChangesAsync();
-        }
     }
 
     public interface ISurveyRepository : IGenericRepository<SurveyEntity, int> 
     {
         Task<List<SurveyEntity>> GetSurveysInclude();
         bool CheckIfSurveyHasAnswers(int surveyId);
-        Task Save();
     }
 }

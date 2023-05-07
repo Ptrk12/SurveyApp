@@ -16,6 +16,6 @@ namespace Infrastructure.Entities
         public string Status { get; set; }
         public int UserId { get; set; }
         public UserEntity User { get; set; }
-        public List<SurveyQuestionEntity>? SurveyQuestions { get; set; }
+        public List<SurveyQuestionEntity> SurveyQuestions { get; set; } = new List<SurveyQuestionEntity>();
     }
 }

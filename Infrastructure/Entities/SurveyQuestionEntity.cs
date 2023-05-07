@@ -13,7 +13,7 @@ namespace Infrastructure.Entities
         public int Id { get; set; }
         public string Type { get; set; }
         public string Question { get; set; }
-        public List<SurveyQuestionAnswerEntity> SurveyQuestionAnswers { get; set; }
-        public List<SurveyEntity> Surveys { get; set; }
+        public List<SurveyQuestionAnswerEntity>? SurveyQuestionAnswers { get; set; } = new List<SurveyQuestionAnswerEntity>();
+        public List<SurveyEntity>? Surveys { get; set; } = new List<SurveyEntity>();
     }
 }

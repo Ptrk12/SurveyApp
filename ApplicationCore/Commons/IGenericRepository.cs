@@ -17,5 +17,6 @@ namespace ApplicationCore.Commons
         Task<T?> Add (T item);
         Task RemoveById(K id);
         void Update (K id, T item);
+        Task Save();
     }
 }
