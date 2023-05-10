@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "9SoH0Fb+qczQFCUINMjjzM2VSqPuLVHv1BPhsMNiK0u/dBi1n04uML/yWWINXe98HVYbYvSkJIihRvOZnIBbPw==",
+  "dgSpecHash": "XvX1pu/yz7osGVkWEkEZkyXrlYkUhCcgYNXPaBvCuZDRXuvLxZLck1P2dJKDyVGwNINU08TfLsYRqkKkK8E4lg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Admin\\Desktop\\sfdsdfsdf\\Infrastructure\\Infrastructure.csproj",
+  "projectFilePath": "C:\\Users\\Admin\\Desktop\\SurveyApp\\Infrastructure\\Infrastructure.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Admin\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",
@@ -110,7 +110,7 @@
       "code": "NU1701",
       "level": "Warning",
       "warningLevel": 1,
-      "message": "Package 'EntityFramework 6.1.0' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' instead of the project target framework 'net7.0'. This package may not be fully compatible with your project.",
+      "message": "Pakiet „EntityFramework 6.1.0” został przywrócony przy użyciu elementu „.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1” zamiast platformy docelowej projektu „net7.0”. Ten pakiet może nie być w pełni kompatybilny z Twoim projektem.",
       "libraryId": "EntityFramework",
       "targetGraphs": [
         "net7.0"
@@ -120,7 +120,7 @@
       "code": "NU1701",
       "level": "Warning",
       "warningLevel": 1,
-      "message": "Package 'Microsoft.AspNet.Identity.Core 2.2.3' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' instead of the project target framework 'net7.0'. This package may not be fully compatible with your project.",
+      "message": "Pakiet „Microsoft.AspNet.Identity.Core 2.2.3” został przywrócony przy użyciu elementu „.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1” zamiast platformy docelowej projektu „net7.0”. Ten pakiet może nie być w pełni kompatybilny z Twoim projektem.",
       "libraryId": "Microsoft.AspNet.Identity.Core",
       "targetGraphs": [
         "net7.0"
@@ -130,7 +130,7 @@
       "code": "NU1701",
       "level": "Warning",
       "warningLevel": 1,
-      "message": "Package 'Microsoft.AspNet.Identity.EntityFramework 2.2.3' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' instead of the project target framework 'net7.0'. This package may not be fully compatible with your project.",
+      "message": "Pakiet „Microsoft.AspNet.Identity.EntityFramework 2.2.3” został przywrócony przy użyciu elementu „.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1” zamiast platformy docelowej projektu „net7.0”. Ten pakiet może nie być w pełni kompatybilny z Twoim projektem.",
       "libraryId": "Microsoft.AspNet.Identity.EntityFramework",
       "targetGraphs": [
         "net7.0"

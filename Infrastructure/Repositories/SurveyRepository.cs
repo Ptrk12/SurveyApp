@@ -35,13 +35,13 @@ namespace Infrastructure.Repositories
 
         public bool CheckIfSurveyHasAnswers(int surveyId)
         {
-            var result = _context.SurveyAnswers
-                .Include(x => x.SurveyQuestions)
-                .ThenInclude(x => x.Surveys)
-                .Where(x => x.Id == surveyId)
-                .Count();
+            var result = (from s in _context.Surveys
+                          join u in _context.SurveyAnswers
+                          on s.Id equals u.Id
+                          where s.Id == surveyId
+                          select s).Count();
 
-            if(result != 0)
+            if (result != 0)
             {
                 return true;
             }

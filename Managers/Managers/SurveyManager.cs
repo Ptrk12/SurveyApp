@@ -34,7 +34,7 @@ namespace Infrastructure.Managers
                 {
                     Title = survey.Title,
                     Status = survey.Status,
-                    UserId = survey.UserId,
+                    UserEmail = survey.UserEmail,
                 };
                 await _surveyRepository.Add(entityToAdd);
                 await _surveyRepository.Save();
@@ -56,7 +56,10 @@ namespace Infrastructure.Managers
         {
             try
             {
-                if(!_surveyRepository.CheckIfSurveyHasAnswers(id) && _userRepository.CheckIfItUserSurvey(id))
+                var chckIfAnswers = _surveyRepository.CheckIfSurveyHasAnswers(id);
+                var chckIfUserSurvey = _userRepository.CheckIfItUserSurvey(id);
+
+                if (chckIfAnswers == false && chckIfUserSurvey == true)
                 {
                     await _surveyRepository.RemoveById(id);
                     return true;

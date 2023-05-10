@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -17,13 +19,15 @@ namespace Infrastructure.Repositories
 
         public bool CheckIfItUserSurvey(int surveyId)
         {
-            var result = (from s in _context.Surveys 
-                          join u in _context.Users  
-                          on s.UserId equals u.Id 
-                          where s.Id == surveyId select s).Count();
+            var result = (from s in _context.Surveys
+                          join u in _context.Users
+                          on s.UserId equals u.Id
+                          where s.Id == surveyId
+                          select s).Count();
 
-            return result != 0? true: false;
+            return result != 0 ? true : false;
         }
+
     }
     public interface IUserRepository
     {

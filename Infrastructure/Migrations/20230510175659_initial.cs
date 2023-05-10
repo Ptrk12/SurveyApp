@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class sdf : Migration
+    public partial class initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -195,7 +195,8 @@ namespace Infrastructure.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false)
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    UserEmail = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -279,9 +280,22 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[,]
+                {
+                    { 1, null, "normaluser", "NORMALUSER" },
+                    { 2, null, "administrator", "ADMINISTRATOR" }
+                });
+
+            migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { 4, 0, "55ba26d4-f8e2-41c3-9a18-681d57316001", "test@mail.com", false, false, null, null, null, "AEg99Eos3k8KJhs+Ikuc0tbwU/rsXS9wnSYCLQ1Eu8CmMPZ4ddY7aWB+cZDXb/ukqA==", null, false, null, false, "Test" });
+                values: new object[,]
+                {
+                    { 1, 0, "05824ba0-d8de-4754-8909-72d9c0a42c2b", "myuser@email.com", false, false, null, "MYUSER@EMAIL.COM", "MYUSER", "AQAAAAIAAYagAAAAEBGigjFkzjFnA/587pADOyP4hVdvuxZAfbHypztvCYBmN4cjI2frhnj+IOeWh3fzVQ==", null, false, null, false, "normaluser" },
+                    { 2, 0, "f90c8937-40d0-4c91-a8ed-a6dad57a7b6e", "admin@email.com", false, false, null, "ADMIN@EMAIL.COM", "ADMINISTRATOR", "AQAAAAIAAYagAAAAEKhda+OEptgJnpQAN4yOLS1O2rSID61FeaNYLeBTczd9dPjduX9KoHLjyj3FpeXQcA==", null, false, null, false, "administrator" }
+                });
 
             migrationBuilder.InsertData(
                 table: "SurveyAnswers",
@@ -317,6 +331,15 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "AspNetUserRoles",
+                columns: new[] { "RoleId", "UserId" },
+                values: new object[,]
+                {
+                    { 1, 1 },
+                    { 2, 2 }
+                });
+
+            migrationBuilder.InsertData(
                 table: "SurveyQuestionAnswerEntitySurveyQuestionEntity",
                 columns: new[] { "SurveyQuestionAnswersId", "SurveyQuestionsId" },
                 values: new object[,]
@@ -335,8 +358,8 @@ namespace Infrastructure.Migrations
 
             migrationBuilder.InsertData(
                 table: "Surveys",
-                columns: new[] { "Id", "Status", "Title", "UserId" },
-                values: new object[] { 1, "public", "My first survey", 4 });
+                columns: new[] { "Id", "Status", "Title", "UserEmail", "UserId" },
+                values: new object[] { 1, "public", "My first survey", "myuser@email.com", 1 });
 
             migrationBuilder.InsertData(
                 table: "SurveyEntitySurveyQuestionEntity",

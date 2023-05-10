@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(SurveyDbContext))]
-    [Migration("20230506145154_sdf")]
-    partial class sdf
+    [Migration("20230510175659_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -41,6 +41,10 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("UserEmail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
@@ -56,7 +60,8 @@ namespace Infrastructure.Migrations
                             Id = 1,
                             Status = "public",
                             Title = "My first survey",
-                            UserId = 4
+                            UserEmail = "myuser@email.com",
+                            UserId = 1
                         });
                 });
 
@@ -304,16 +309,33 @@ namespace Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 4,
+                            Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "55ba26d4-f8e2-41c3-9a18-681d57316001",
-                            Email = "test@mail.com",
+                            ConcurrencyStamp = "05824ba0-d8de-4754-8909-72d9c0a42c2b",
+                            Email = "myuser@email.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            PasswordHash = "AEg99Eos3k8KJhs+Ikuc0tbwU/rsXS9wnSYCLQ1Eu8CmMPZ4ddY7aWB+cZDXb/ukqA==",
+                            NormalizedEmail = "MYUSER@EMAIL.COM",
+                            NormalizedUserName = "MYUSER",
+                            PasswordHash = "AQAAAAIAAYagAAAAEBGigjFkzjFnA/587pADOyP4hVdvuxZAfbHypztvCYBmN4cjI2frhnj+IOeWh3fzVQ==",
                             PhoneNumberConfirmed = false,
                             TwoFactorEnabled = false,
-                            UserName = "Test"
+                            UserName = "normaluser"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "f90c8937-40d0-4c91-a8ed-a6dad57a7b6e",
+                            Email = "admin@email.com",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "ADMIN@EMAIL.COM",
+                            NormalizedUserName = "ADMINISTRATOR",
+                            PasswordHash = "AQAAAAIAAYagAAAAEKhda+OEptgJnpQAN4yOLS1O2rSID61FeaNYLeBTczd9dPjduX9KoHLjyj3FpeXQcA==",
+                            PhoneNumberConfirmed = false,
+                            TwoFactorEnabled = false,
+                            UserName = "administrator"
                         });
                 });
 
@@ -345,6 +367,20 @@ namespace Infrastructure.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "normaluser",
+                            NormalizedName = "NORMALUSER"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "administrator",
+                            NormalizedName = "ADMINISTRATOR"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -429,6 +465,18 @@ namespace Infrastructure.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = 1,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            UserId = 2,
+                            RoleId = 2
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>

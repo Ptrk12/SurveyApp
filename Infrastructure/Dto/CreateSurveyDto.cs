@@ -14,6 +14,6 @@ namespace ApplicationCore.Dto
         [Required]
         public string Status { get; set; }
         [Required]
-        public int UserId { get; set; }
+        public string UserEmail { get; set; }
     }
 }

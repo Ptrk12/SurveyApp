@@ -49,8 +49,9 @@ namespace SurveyApp
 
 
             app.MapControllers();
-            app.AddUsers();
+            //app.AddUsers();
             app.Run();
+
         }
     }
 }

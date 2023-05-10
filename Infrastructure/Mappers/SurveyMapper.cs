@@ -39,7 +39,7 @@ namespace Infrastructure.Mappers
                 Id = entity.Id,
                 Title = entity.Title,
                 Status = entity.Status,
-                UserId= entity.UserId,
+                UserEmail= entity.UserEmail,
                 SurveyQuestions = entity.SurveyQuestions.Select(x => FromEntityToSurveyQuestion(x)).ToList()
             };
         }

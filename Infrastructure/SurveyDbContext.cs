@@ -1,5 +1,6 @@
 ﻿using Infrastructure.Entities;
-using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,12 +23,61 @@ namespace Infrastructure
             base.OnConfiguring(optionsBuilder);
 
             optionsBuilder.UseSqlServer(
-                "Data Source=DESKTOP-QR36UPA;Initial Catalog=SurveyApp;Integrated Security=True;Pooling=False;TrustServerCertificate=True");
+                "Data Source=DESKTOP-BORRVIJ;Initial Catalog=SurveyApp;Integrated Security=True;Pooling=False;TrustServerCertificate=True");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            var hasher = new PasswordHasher<UserRoleEntity>();
+
+            modelBuilder.Entity<UserRoleEntity>().HasData(new UserRoleEntity
+            { Id = 1, Name = "normaluser", NormalizedName = "NORMALUSER".ToUpper() });
+
+            modelBuilder.Entity<UserRoleEntity>().HasData(new UserRoleEntity
+            { Id = 2, Name = "administrator", NormalizedName = "ADMINISTRATOR".ToUpper() });
+
+            modelBuilder.Entity<UserEntity>().HasData(
+                new UserEntity
+                {
+                    Id = 1,
+                    UserName = "normaluser",
+                    NormalizedUserName = "NORMALUSER",
+                    Email = "myuser@email.com",
+                    NormalizedEmail = "MYUSER@EMAIL.COM",
+                    PasswordHash = hasher.HashPassword(null, "Test123!")
+                },
+                new UserEntity
+                {
+                    Id = 2,
+                    UserName = "administrator",
+                    NormalizedUserName = "ADMINISTRATOR",
+                    Email = "admin@email.com",
+                    NormalizedEmail = "ADMIN@EMAIL.COM",
+                    PasswordHash = hasher.HashPassword(null, "Test123!")
+                }
+            );
+
+
+
+            modelBuilder.Entity<IdentityUserRole<int>>().HasData(
+                new IdentityUserRole<int>
+                {
+                    RoleId = 1,
+                    UserId = 1
+                },
+                new IdentityUserRole<int>
+                {
+                    RoleId = 2,
+                    UserId = 2
+                }
+            );
+
+            modelBuilder.Entity<UserEntity>()
+                .HasMany(x => x.Surveys)
+                .WithOne(x => x.User)
+                .HasForeignKey(x => x.UserId);
 
             modelBuilder.Entity<SurveyQuestionUserAnswerEntity>()
                 .HasOne(x => x.SurveyQuestion);
@@ -44,17 +94,7 @@ namespace Infrastructure
                 new SurveyQuestionAnswerEntity() { Id = 8, Answer = "300km" },
                 new SurveyQuestionAnswerEntity() { Id = 9, Answer = "12" },
                 new SurveyQuestionAnswerEntity() { Id = 10, Answer = "444" });
-
-            //modelBuilder.Entity<SurveyQuestionAnswerEntity>()
-            //    .Property(e => e.Answer)
-            //    .HasConversion(
-            //    v => string.Join(',', v),
-            //    v => v.Split(',', StringSplitOptions.RemoveEmptyEntries));
-
-            modelBuilder.Entity<UserEntity>()
-                .HasMany(x => x.Surveys)
-                .WithOne(x => x.User)
-                .HasForeignKey(x => x.UserId);
+                
 
             modelBuilder.Entity<SurveyQuestionEntity>()
                 .HasData(
@@ -113,16 +153,7 @@ namespace Infrastructure
                     Question = "4 x 3 ?"
                 });
 
-            modelBuilder.Entity<UserEntity>()
-                .HasData(
-                new UserEntity()
-                {
-                    Id = 4,
-                    UserName = "Test",
-                    Email = "test@mail.com",
-                    PasswordHash = "AEg99Eos3k8KJhs+Ikuc0tbwU/rsXS9wnSYCLQ1Eu8CmMPZ4ddY7aWB+cZDXb/ukqA=="
-                }
-                );
+
 
             modelBuilder.Entity<SurveyEntity>()
                 .HasData(
@@ -131,7 +162,8 @@ namespace Infrastructure
                     Id = 1,
                     Status = "public",
                     Title = "My first survey",
-                    UserId=4
+                    UserEmail = "myuser@email.com",
+                    UserId = 1,
                 });
 
             modelBuilder.Entity<SurveyEntity>()
