@@ -39,9 +39,10 @@ namespace Infrastructure.Repositories
                           join u in _context.SurveyAnswers
                           on s.Id equals u.Id
                           where s.Id == surveyId
-                          select s).Count();
+                          group u by u.Id into grouped
+                          select grouped.Count());
 
-            if (result != 0)
+            if (result.Count() != 0)
             {
                 return true;
             }

@@ -66,6 +66,7 @@ public class AuthenticationController : ControllerBase
             .WithSecret(Encoding.UTF8.GetBytes(_jwtSettings.Secret))
             .AddClaim(JwtRegisteredClaimNames.Name, user.UserName)
             .AddClaim(JwtRegisteredClaimNames.Gender, "male")
+            .AddClaim(JwtRegisteredClaimNames.NameId,user.Id)
             .AddClaim(JwtRegisteredClaimNames.Email, user.Email)
             .AddClaim(JwtRegisteredClaimNames.Exp, DateTimeOffset.UtcNow.AddMinutes(5).ToUnixTimeSeconds())
             .AddClaim(JwtRegisteredClaimNames.Jti, Guid.NewGuid())

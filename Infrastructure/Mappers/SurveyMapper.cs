@@ -43,5 +43,14 @@ namespace Infrastructure.Mappers
                 SurveyQuestions = entity.SurveyQuestions.Select(x => FromEntityToSurveyQuestion(x)).ToList()
             };
         }
+
+        public static SurveyQuestionAnswerEntity FromSurveyQuestionAnswerToQuestionAnswer(SurveyQuestionUserAnswerEntity entity)
+        {
+            return new SurveyQuestionAnswerEntity
+            {
+                Id = entity.Id,
+                Answer = entity.Answer
+            };
+        }
     }
 }

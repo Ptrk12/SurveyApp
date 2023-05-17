@@ -24,5 +24,14 @@ namespace SurveyApp.Controllers
 
             return result != null ? Ok(result) : BadRequest();
         }
+
+        [HttpPost]
+        [Route("{surveyId}/{questionId}")]
+        public async Task<IActionResult> SaveUserAnswer(UserAnswerDto dto, int surveyId, int questionId)
+        {
+            var result = await _surveyQuestionManager.SaveUserAnswer(dto, surveyId, questionId);
+
+            return result == true? Ok() : BadRequest();
+        }
     }
 }

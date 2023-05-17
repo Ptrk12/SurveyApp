@@ -13,7 +13,7 @@ namespace ApplicationCore.Dto
         public string Title { get; set; }
         [Required]
         public string Status { get; set; }
-        [Required]
-        public string UserEmail { get; set; }
+        //[Required]
+        //public string UserEmail { get; set; }
     }
 }

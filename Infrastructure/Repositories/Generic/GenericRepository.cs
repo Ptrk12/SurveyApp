@@ -20,7 +20,7 @@ namespace Infrastructure.Repositories.Generic
             _context = context;
         }
 
-        public async Task<T> Add(T item)
+        public async Task<T?> Add(T item)
         {
             try
             {

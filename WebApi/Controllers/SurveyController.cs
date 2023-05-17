@@ -41,7 +41,7 @@ namespace SurveyApp.Controllers
         public async Task<IActionResult> CreateNewSurvey(CreateSurveyDto dto)
         {
             var result = await _surveyManager.CreateNewSurvey(dto);
-            return result == true? Ok(result) : BadRequest();   
+            return result == true? Ok() : BadRequest();   
         }
     }
 }

@@ -37,11 +37,30 @@ namespace Infrastructure.Repositories
             }
         }
 
-
+        public SurveyQuestionUserAnswerEntity? SaveUserAnswer(UserAnswerDto dto, int surveyId, int surveyQuestionId, int userId)
+        {
+            var answer = new SurveyQuestionUserAnswerEntity()
+            {
+                SurveyId = surveyId,
+                SurveyQuestionId = surveyQuestionId,
+                UserId = userId,
+                Answer = dto.Answer
+            };
+            try
+            {
+                _context.UserAnswers.Add(answer);
+                return answer;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
     }
 
     public interface ISurveyQuestionRepository : IGenericRepository<SurveyQuestionEntity, int>
     {
         SurveyQuestionEntity? CreateNewSurveyQuestion(CreateSurveyQuestionDto dto);
+        SurveyQuestionUserAnswerEntity? SaveUserAnswer(UserAnswerDto dto, int surveyId, int surveyQuestionId, int userId);
     }
 }

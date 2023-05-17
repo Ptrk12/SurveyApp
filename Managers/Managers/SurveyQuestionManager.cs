@@ -15,13 +15,16 @@ namespace Managers.Managers
     {
         private ISurveyQuestionRepository _surveyQuestionRepository;
         private ISurveyRepository _surveyRepository;
+        private IUserRepository _userRepository;
 
         public SurveyQuestionManager(
             ISurveyQuestionRepository surveyQuestionRepository
-            , ISurveyRepository surveyRepository)
+            ,ISurveyRepository surveyRepository
+            ,IUserRepository userRepository)
         {
             _surveyQuestionRepository = surveyQuestionRepository;
             _surveyRepository = surveyRepository;
+            _userRepository = userRepository;
         }
 
         public async Task<SurveyQuestion?> CreateNewSurveyQuestion(CreateSurveyQuestionDto dto, int surveyId)
@@ -47,10 +50,33 @@ namespace Managers.Managers
                 return null;
             }
         }
+
+        public async Task<bool> SaveUserAnswer(UserAnswerDto dto, int surveyId, int questionId)
+        {
+            try
+            {
+                var answer = _surveyQuestionRepository.SaveUserAnswer(dto, surveyId, questionId, (int.Parse(_userRepository.GetUserIdFromTokenJwt())));
+
+                var foundQuestion = await _surveyQuestionRepository.GetByIdAsync(questionId);
+
+                if(answer != null && foundQuestion != null) 
+                {
+                    foundQuestion.SurveyQuestionAnswers.Add(SurveyMapper.FromSurveyQuestionAnswerToQuestionAnswer(answer));
+                    await _surveyQuestionRepository.Save();
+                    return true;
+                }
+                return false;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
     }
 
     public interface ISurveyQuestionManager
     {
         Task<SurveyQuestion?> CreateNewSurveyQuestion(CreateSurveyQuestionDto dto, int surveyId);
+        Task<bool> SaveUserAnswer(UserAnswerDto dto, int surveyId, int questionId);
     }
 }

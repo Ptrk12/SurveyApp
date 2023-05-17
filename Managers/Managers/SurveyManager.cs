@@ -34,7 +34,8 @@ namespace Infrastructure.Managers
                 {
                     Title = survey.Title,
                     Status = survey.Status,
-                    UserEmail = survey.UserEmail,
+                    UserId = int.Parse(_userRepository.GetUserIdFromTokenJwt()),
+                    UserEmail = _userRepository.GetUserEmailFromTokenJwt(),
                 };
                 await _surveyRepository.Add(entityToAdd);
                 await _surveyRepository.Save();
@@ -62,6 +63,7 @@ namespace Infrastructure.Managers
                 if (chckIfAnswers == false && chckIfUserSurvey == true)
                 {
                     await _surveyRepository.RemoveById(id);
+                    await _surveyRepository.Save();
                     return true;
                 }
                 return false;
