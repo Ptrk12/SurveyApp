@@ -48,11 +48,53 @@ namespace Infrastructure.Repositories
             var result = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Email);
             return result;
         }
+
+        public string GetDomainFromEmail(string email)
+        {
+            try
+            {
+                var address = new System.Net.Mail.MailAddress(email);
+                return address.Host;
+            }
+            catch
+            {
+                return string.Empty;
+            }
+        }
+
+        public bool IsEmailFromDomain(string email, string domain)
+        {
+            try
+            {
+                var address = new System.Net.Mail.MailAddress(email);
+                return address.Host.Equals(domain, StringComparison.OrdinalIgnoreCase);
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public string RemoveDomainFromEmail(string email)
+        {
+            try
+            {
+                var address = new System.Net.Mail.MailAddress(email);
+                return address.User;
+            }
+            catch
+            {
+                return string.Empty;
+            }
+        }
     }
     public interface IUserRepository
     {
         bool CheckIfItUserSurvey(int surveyId);
         string? GetUserEmailFromTokenJwt();
         public string GetUserIdFromTokenJwt();
+        bool IsEmailFromDomain(string email, string domain);
+        string RemoveDomainFromEmail(string email);
+        string GetDomainFromEmail(string email);
     }
 }

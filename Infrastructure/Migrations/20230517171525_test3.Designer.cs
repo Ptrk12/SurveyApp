@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(SurveyDbContext))]
-    [Migration("20230510180221_initial2")]
-    partial class initial2
+    [Migration("20230517171525_test3")]
+    partial class test3
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -45,7 +45,7 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserId")
+                    b.Property<int?>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -229,7 +229,7 @@ namespace Infrastructure.Migrations
                     b.Property<int>("SurveyQuestionId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserId")
+                    b.Property<int?>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -311,13 +311,13 @@ namespace Infrastructure.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "33ab19a1-a4df-4ddb-a088-a2a276f9c9ec",
+                            ConcurrencyStamp = "15d2a6ed-2b49-4f9b-9e10-58d9053c23f7",
                             Email = "myuser@email.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "MYUSER@EMAIL.COM",
                             NormalizedUserName = "NORMALUSER",
-                            PasswordHash = "AQAAAAIAAYagAAAAEKGUyen+V4IeQG8wD8S2D35jPvhhPwGi0v2fi1KTAp6yRw3QYzpuBlFh1eaOVWQEHA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEMksacbudj4cD84QtvdKG9DxPoHLNdSclH5hHbKByQW4Zjq4pZVcb85dEAXWd1cJhw==",
                             PhoneNumberConfirmed = false,
                             TwoFactorEnabled = false,
                             UserName = "normaluser"
@@ -326,13 +326,13 @@ namespace Infrastructure.Migrations
                         {
                             Id = 2,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "ded9a775-8b7a-4775-8254-4128edbec0e2",
+                            ConcurrencyStamp = "e803adb2-3899-472c-8f84-06a21a875e5b",
                             Email = "admin@email.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@EMAIL.COM",
                             NormalizedUserName = "ADMINISTRATOR",
-                            PasswordHash = "AQAAAAIAAYagAAAAECb3lDya2pilkIoCChcFvX+JR/Iuln6o4w7eLUZu82Bk7NXrNIevzQmqGL8rJ+LwyQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEDnfNuaL9hA0XDUSKCmTXFJYGnIaTBGImc1eK1t8uO+b5sBnWluOIoyKNGdQC39BYw==",
                             PhoneNumberConfirmed = false,
                             TwoFactorEnabled = false,
                             UserName = "administrator"
@@ -631,9 +631,7 @@ namespace Infrastructure.Migrations
                 {
                     b.HasOne("Infrastructure.Entities.UserEntity", "User")
                         .WithMany("Surveys")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
 
                     b.Navigation("User");
                 });

@@ -15,7 +15,7 @@ namespace Infrastructure.Entities
         public int SurveyId { get; set; }
         public int SurveyQuestionId { get; set; }
         public SurveyQuestionEntity SurveyQuestion { get; set; }
-        public int UserId { get; set; }
+        public int? UserId { get; set; }
         public string Answer { get; set; }
     }
 }

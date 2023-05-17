@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class initial : Migration
+    public partial class test : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -195,7 +195,7 @@ namespace Infrastructure.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: true),
                     UserEmail = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
@@ -293,8 +293,8 @@ namespace Infrastructure.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { 1, 0, "05824ba0-d8de-4754-8909-72d9c0a42c2b", "myuser@email.com", false, false, null, "MYUSER@EMAIL.COM", "MYUSER", "AQAAAAIAAYagAAAAEBGigjFkzjFnA/587pADOyP4hVdvuxZAfbHypztvCYBmN4cjI2frhnj+IOeWh3fzVQ==", null, false, null, false, "normaluser" },
-                    { 2, 0, "f90c8937-40d0-4c91-a8ed-a6dad57a7b6e", "admin@email.com", false, false, null, "ADMIN@EMAIL.COM", "ADMINISTRATOR", "AQAAAAIAAYagAAAAEKhda+OEptgJnpQAN4yOLS1O2rSID61FeaNYLeBTczd9dPjduX9KoHLjyj3FpeXQcA==", null, false, null, false, "administrator" }
+                    { 1, 0, "fbd69297-3ee7-4903-9f9e-d8e5e16c70c9", "myuser@email.com", false, false, null, "MYUSER@EMAIL.COM", "NORMALUSER", "AQAAAAIAAYagAAAAEDhDfMJ/8vfaANoWLRJYwHuz35fA4CwusS8DWh/VWu/Mz+3buiwIwfOyjImHDIOr8Q==", null, false, null, false, "normaluser" },
+                    { 2, 0, "6d4615a0-06f7-4e95-819a-3758989c223f", "admin@email.com", false, false, null, "ADMIN@EMAIL.COM", "ADMINISTRATOR", "AQAAAAIAAYagAAAAEHfrJtDU6/4EhT2medsQgtcNUlSKMvYkrXe5cVSvzB8trnq+C+9y9mSdwqE70d6g+A==", null, false, null, false, "administrator" }
                 });
 
             migrationBuilder.InsertData(

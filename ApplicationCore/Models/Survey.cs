@@ -16,7 +16,7 @@ namespace ApplicationCore.Models
         public string Status { get; set; }
         public string UserEmail { get; set; }
         [JsonIgnore]
-        public int UserId { get; set; }
+        public int? UserId { get; set; }
         public List<SurveyQuestion>? SurveyQuestions { get; set; }
     }
 }

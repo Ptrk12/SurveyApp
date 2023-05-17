@@ -1,5 +1,6 @@
 ﻿using Infrastructure.Dto;
 using Managers.Managers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -27,11 +28,18 @@ namespace SurveyApp.Controllers
 
         [HttpPost]
         [Route("{surveyId}/{questionId}")]
+        [AllowAnonymous]
         public async Task<IActionResult> SaveUserAnswer(UserAnswerDto dto, int surveyId, int questionId)
         {
             var result = await _surveyQuestionManager.SaveUserAnswer(dto, surveyId, questionId);
 
-            return result == true? Ok() : BadRequest();
+            if (result == 2)
+                return Forbid();
+            if (result == -1)
+                return BadRequest();
+            if (result == 0)
+                return Unauthorized();
+            return Ok();
         }
     }
 }

@@ -4,6 +4,7 @@ using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(SurveyDbContext))]
-    partial class SurveyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230517171210_test2")]
+    partial class test2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -226,7 +229,7 @@ namespace Infrastructure.Migrations
                     b.Property<int>("SurveyQuestionId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("UserId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -308,13 +311,13 @@ namespace Infrastructure.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "15d2a6ed-2b49-4f9b-9e10-58d9053c23f7",
+                            ConcurrencyStamp = "d8a51138-6041-49a4-99b5-36e7975ed891",
                             Email = "myuser@email.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "MYUSER@EMAIL.COM",
                             NormalizedUserName = "NORMALUSER",
-                            PasswordHash = "AQAAAAIAAYagAAAAEMksacbudj4cD84QtvdKG9DxPoHLNdSclH5hHbKByQW4Zjq4pZVcb85dEAXWd1cJhw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEHXDCOIiG7XL7YY3WSAcJ0sL3ML3xgSSXv9eb0KslhhfKOhyKLhMFLVfhRX+mswZxQ==",
                             PhoneNumberConfirmed = false,
                             TwoFactorEnabled = false,
                             UserName = "normaluser"
@@ -323,13 +326,13 @@ namespace Infrastructure.Migrations
                         {
                             Id = 2,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "e803adb2-3899-472c-8f84-06a21a875e5b",
+                            ConcurrencyStamp = "4ef1d9a8-dc58-4683-8ee5-9beda74722fa",
                             Email = "admin@email.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@EMAIL.COM",
                             NormalizedUserName = "ADMINISTRATOR",
-                            PasswordHash = "AQAAAAIAAYagAAAAEDnfNuaL9hA0XDUSKCmTXFJYGnIaTBGImc1eK1t8uO+b5sBnWluOIoyKNGdQC39BYw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEOjJEZOQaDXC83PWWhKhi8kFfxvqbdgUCJiMj7GEK+bfEToZVAl7mqn27FpQ/H0kDw==",
                             PhoneNumberConfirmed = false,
                             TwoFactorEnabled = false,
                             UserName = "administrator"

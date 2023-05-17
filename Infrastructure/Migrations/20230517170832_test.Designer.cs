@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(SurveyDbContext))]
-    [Migration("20230510175659_initial")]
-    partial class initial
+    [Migration("20230517170832_test")]
+    partial class test
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -45,7 +45,8 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserId")
+                    b.Property<int?>("UserId")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -311,13 +312,13 @@ namespace Infrastructure.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "05824ba0-d8de-4754-8909-72d9c0a42c2b",
+                            ConcurrencyStamp = "fbd69297-3ee7-4903-9f9e-d8e5e16c70c9",
                             Email = "myuser@email.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "MYUSER@EMAIL.COM",
-                            NormalizedUserName = "MYUSER",
-                            PasswordHash = "AQAAAAIAAYagAAAAEBGigjFkzjFnA/587pADOyP4hVdvuxZAfbHypztvCYBmN4cjI2frhnj+IOeWh3fzVQ==",
+                            NormalizedUserName = "NORMALUSER",
+                            PasswordHash = "AQAAAAIAAYagAAAAEDhDfMJ/8vfaANoWLRJYwHuz35fA4CwusS8DWh/VWu/Mz+3buiwIwfOyjImHDIOr8Q==",
                             PhoneNumberConfirmed = false,
                             TwoFactorEnabled = false,
                             UserName = "normaluser"
@@ -326,13 +327,13 @@ namespace Infrastructure.Migrations
                         {
                             Id = 2,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "f90c8937-40d0-4c91-a8ed-a6dad57a7b6e",
+                            ConcurrencyStamp = "6d4615a0-06f7-4e95-819a-3758989c223f",
                             Email = "admin@email.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@EMAIL.COM",
                             NormalizedUserName = "ADMINISTRATOR",
-                            PasswordHash = "AQAAAAIAAYagAAAAEKhda+OEptgJnpQAN4yOLS1O2rSID61FeaNYLeBTczd9dPjduX9KoHLjyj3FpeXQcA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEHfrJtDU6/4EhT2medsQgtcNUlSKMvYkrXe5cVSvzB8trnq+C+9y9mSdwqE70d6g+A==",
                             PhoneNumberConfirmed = false,
                             TwoFactorEnabled = false,
                             UserName = "administrator"

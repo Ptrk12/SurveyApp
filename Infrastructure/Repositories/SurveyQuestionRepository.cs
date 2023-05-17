@@ -37,7 +37,7 @@ namespace Infrastructure.Repositories
             }
         }
 
-        public SurveyQuestionUserAnswerEntity? SaveUserAnswer(UserAnswerDto dto, int surveyId, int surveyQuestionId, int userId)
+        public SurveyQuestionUserAnswerEntity? SaveUserAnswer(UserAnswerDto dto, int surveyId, int surveyQuestionId, int? userId)
         {
             var answer = new SurveyQuestionUserAnswerEntity()
             {
@@ -61,6 +61,6 @@ namespace Infrastructure.Repositories
     public interface ISurveyQuestionRepository : IGenericRepository<SurveyQuestionEntity, int>
     {
         SurveyQuestionEntity? CreateNewSurveyQuestion(CreateSurveyQuestionDto dto);
-        SurveyQuestionUserAnswerEntity? SaveUserAnswer(UserAnswerDto dto, int surveyId, int surveyQuestionId, int userId);
+        SurveyQuestionUserAnswerEntity? SaveUserAnswer(UserAnswerDto dto, int surveyId, int surveyQuestionId, int? userId);
     }
 }

@@ -1,4 +1,5 @@
-﻿using ApplicationCore.Models;
+﻿using ApplicationCore.Const;
+using ApplicationCore.Models;
 using Infrastructure.Dto;
 using Infrastructure.Managers;
 using Infrastructure.Mappers;
@@ -32,6 +33,13 @@ namespace Managers.Managers
             try
             {
                 var questionToAdd = _surveyQuestionRepository.CreateNewSurveyQuestion(dto);
+
+                if(dto.Type != QuestionTypes.Numeric && dto.Type != QuestionTypes.Multiple &&
+                    dto.Type != QuestionTypes.Open)
+                {
+                    return null;
+                }
+
                 await _surveyQuestionRepository.Save();
 
                 var foundSurvey = await _surveyRepository.GetByIdAsync(surveyId);
@@ -51,25 +59,65 @@ namespace Managers.Managers
             }
         }
 
-        public async Task<bool> SaveUserAnswer(UserAnswerDto dto, int surveyId, int questionId)
+        public async Task<int> SaveUserAnswer(UserAnswerDto dto, int surveyId, int questionId)
         {
             try
             {
-                var answer = _surveyQuestionRepository.SaveUserAnswer(dto, surveyId, questionId, (int.Parse(_userRepository.GetUserIdFromTokenJwt())));
+                var userEmail = _userRepository.GetUserEmailFromTokenJwt();
+                var userId = _userRepository.GetUserIdFromTokenJwt();
+
+                var foundSurvey = await _surveyRepository.GetByIdAsync(surveyId);        
 
                 var foundQuestion = await _surveyQuestionRepository.GetByIdAsync(questionId);
 
-                if(answer != null && foundQuestion != null) 
+                var allowedDomain = String.Empty;
+
+                if(userEmail != null)
                 {
-                    foundQuestion.SurveyQuestionAnswers.Add(SurveyMapper.FromSurveyQuestionAnswerToQuestionAnswer(answer));
-                    await _surveyQuestionRepository.Save();
-                    return true;
+                    allowedDomain = _userRepository.GetDomainFromEmail(userEmail);
                 }
-                return false;
+
+                if(foundSurvey != null)
+                {
+                    if(foundSurvey.Status == SurveyTypes.Private && userEmail == null && userId == null)
+                    {
+                        return 0;
+                    }
+                    if(foundSurvey.Status == SurveyTypes.Domain && (userEmail != null || !_userRepository.IsEmailFromDomain(userEmail, allowedDomain) && userId != null)) 
+                    {
+                        return 2;
+                    }
+                }
+
+                if(foundQuestion != null) 
+                {
+                    if (foundSurvey.Status == SurveyTypes.Private && userEmail != null && userId != null)
+                    {
+                        var answer = _surveyQuestionRepository.SaveUserAnswer(dto, surveyId, questionId, (int.Parse(_userRepository.GetUserIdFromTokenJwt())));
+                        foundQuestion.SurveyQuestionAnswers.Add(SurveyMapper.FromSurveyQuestionAnswerToQuestionAnswer(answer));
+                    }
+                    else if (foundSurvey.Status == SurveyTypes.Domain && userEmail != null && userId != null)
+                    {
+                        if (_userRepository.IsEmailFromDomain(userEmail, allowedDomain))
+                        {
+                            var answer = _surveyQuestionRepository.SaveUserAnswer(dto, surveyId, questionId, null);
+                            foundQuestion.SurveyQuestionAnswers.Add(SurveyMapper.FromSurveyQuestionAnswerToQuestionAnswer(answer));
+                        }
+                    }
+                    else
+                    {
+                        var answer = _surveyQuestionRepository.SaveUserAnswer(dto, surveyId, questionId, null);
+                        foundQuestion.SurveyQuestionAnswers.Add(SurveyMapper.FromSurveyQuestionAnswerToQuestionAnswer(answer));
+                    }
+
+                    await _surveyQuestionRepository.Save();
+                    return 1;
+                }
+                return -1;
             }
             catch (Exception)
             {
-                return false;
+                return -1;
             }
         }
     }
@@ -77,6 +125,6 @@ namespace Managers.Managers
     public interface ISurveyQuestionManager
     {
         Task<SurveyQuestion?> CreateNewSurveyQuestion(CreateSurveyQuestionDto dto, int surveyId);
-        Task<bool> SaveUserAnswer(UserAnswerDto dto, int surveyId, int questionId);
+        Task<int> SaveUserAnswer(UserAnswerDto dto, int surveyId, int questionId);
     }
 }
