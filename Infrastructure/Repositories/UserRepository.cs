@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using Infrastructure.Entities;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Repositories
 {
-    public class UserRepository : IUserRepository
+    public class UserRepository :IUserRepository
     {
         private readonly SurveyDbContext _context;
         private readonly IHttpContextAccessor _httpContextAccessor;
@@ -87,6 +88,12 @@ namespace Infrastructure.Repositories
                 return string.Empty;
             }
         }
+
+        public bool CheckIfUserAdmin()
+        {
+            var email = GetUserEmailFromTokenJwt();
+            return  email == "admin@email.com" ? true : false;
+        }
     }
     public interface IUserRepository
     {
@@ -96,5 +103,6 @@ namespace Infrastructure.Repositories
         bool IsEmailFromDomain(string email, string domain);
         string RemoveDomainFromEmail(string email);
         string GetDomainFromEmail(string email);
+        bool CheckIfUserAdmin();
     }
 }

@@ -1,5 +1,6 @@
 ﻿
 using ApplicationCore.Commons;
+using ApplicationCore.Dto;
 using ApplicationCore.Models;
 using Infrastructure.Entities;
 using Infrastructure.Repositories.Generic;
@@ -48,11 +49,22 @@ namespace Infrastructure.Repositories
             }
             return false;
         }
+
+        public void UpdateSurvey(CreateSurveyDto dto, int id)
+        {
+            var foundSurvey = _context.Surveys.Where(x => x.Id == id).FirstOrDefault();
+            if(foundSurvey != null)
+            {
+                foundSurvey.Title = dto.Title;
+                foundSurvey.Status = dto.Status;
+            }
+        }
     }
 
     public interface ISurveyRepository : IGenericRepository<SurveyEntity, int> 
     {
         Task<List<SurveyEntity>> GetSurveysInclude();
         bool CheckIfSurveyHasAnswers(int surveyId);
+        void UpdateSurvey(CreateSurveyDto dto, int id);
     }
 }

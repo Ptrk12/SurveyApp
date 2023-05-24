@@ -63,10 +63,8 @@ namespace Infrastructure.Repositories.Generic
         public void Update(K id, T item)
         {
             var foundEntity = _context.Set<T>().Find(id);
-            if (foundEntity.Id.CompareTo(item.Id) == 0 && foundEntity != null)
-            {
-                   _context.Set<T>().Update(item);
-            }
+            _context.Set<T>().Update(item);
+
         }
     }
 }

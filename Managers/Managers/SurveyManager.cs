@@ -60,7 +60,7 @@ namespace Infrastructure.Managers
                 var chckIfAnswers = _surveyRepository.CheckIfSurveyHasAnswers(id);
                 var chckIfUserSurvey = _userRepository.CheckIfItUserSurvey(id);
 
-                if (chckIfAnswers == false && chckIfUserSurvey == true)
+                if ((chckIfAnswers == false && chckIfUserSurvey == true) || _userRepository.CheckIfUserAdmin() == true)
                 {
                     await _surveyRepository.RemoveById(id);
                     await _surveyRepository.Save();
@@ -73,6 +73,27 @@ namespace Infrastructure.Managers
                 return false;
             }
         }
+        public async Task<bool> EditSurvey(CreateSurveyDto dto, int id)
+        {
+            try
+            {
+                var itIsUserSurvey = _userRepository.CheckIfItUserSurvey(id);
+                var surveyHasAnswers = _surveyRepository.CheckIfSurveyHasAnswers(id);
+                var isAdmin = _userRepository.CheckIfUserAdmin();
+                if ((itIsUserSurvey == true && surveyHasAnswers == false) || isAdmin == true)
+                {
+                    _surveyRepository.UpdateSurvey(dto, id);
+                    await _surveyRepository.Save();
+                    return true;
+                }
+                return false;
+            }
+            catch
+            {
+                return false;
+            }
+
+        }
     }
 
     public interface ISurveyManager
@@ -80,5 +101,6 @@ namespace Infrastructure.Managers
         Task<List<Survey>> GetAll();
         Task<bool> RemoweSurveyById(int id);
         Task<bool> CreateNewSurvey(CreateSurveyDto survey);
+        Task<bool> EditSurvey(CreateSurveyDto dto, int id);
     }
 }

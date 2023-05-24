@@ -44,7 +44,7 @@ namespace Managers.Managers
 
                 var foundSurvey = await _surveyRepository.GetByIdAsync(surveyId);
 
-                if (foundSurvey != null && questionToAdd != null)
+                if ((foundSurvey != null && questionToAdd != null && _userRepository.CheckIfItUserSurvey(surveyId)||_userRepository.CheckIfUserAdmin()))
                 {
                     foundSurvey.SurveyQuestions.Add(questionToAdd);
                     await _surveyQuestionRepository.Save();
@@ -74,7 +74,7 @@ namespace Managers.Managers
 
                 if(userEmail != null)
                 {
-                    allowedDomain = _userRepository.GetDomainFromEmail(userEmail);
+                    allowedDomain = _userRepository.GetDomainFromEmail(foundSurvey.UserEmail);
                 }
 
                 if(foundSurvey != null)
@@ -91,6 +91,11 @@ namespace Managers.Managers
 
                 if(foundQuestion != null) 
                 {
+                    if (_userRepository.CheckIfUserAdmin() == true)
+                    {
+                        var answer = _surveyQuestionRepository.SaveUserAnswer(dto, surveyId, questionId, (int.Parse(_userRepository.GetUserIdFromTokenJwt())));
+                        foundQuestion.SurveyQuestionAnswers.Add(SurveyMapper.FromSurveyQuestionAnswerToQuestionAnswer(answer));
+                    }
                     if (foundSurvey.Status == SurveyTypes.Private && userEmail != null && userId != null)
                     {
                         var answer = _surveyQuestionRepository.SaveUserAnswer(dto, surveyId, questionId, (int.Parse(_userRepository.GetUserIdFromTokenJwt())));
@@ -113,7 +118,10 @@ namespace Managers.Managers
                     await _surveyQuestionRepository.Save();
                     return 1;
                 }
-                return -1;
+                else
+                {
+                    return -1;
+                }
             }
             catch (Exception)
             {

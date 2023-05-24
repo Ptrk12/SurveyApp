@@ -150,44 +150,5 @@ namespace SurveyApp.Configuration
                 });
             });
         }
-
-        //public static async void AddUsers(this WebApplication app)
-        //{
-        //    using (var scope = app.Services.CreateScope())
-        //    {
-
-        //        var userManager = scope.ServiceProvider.GetService<UserManager<UserEntity>>();
-        //        var roleManager = scope.ServiceProvider.GetService<RoleManager<UserRoleEntity>>();
-
-        //        var userRoleExists = await roleManager.RoleExistsAsync(Roles.User);
-        //        var adminRoleExists = await roleManager.RoleExistsAsync(Roles.User);
-
-        //        if(!userRoleExists && !adminRoleExists)
-        //        {
-        //            await roleManager.CreateAsync(new UserRoleEntity() { Name = Roles.User });
-        //            await roleManager.CreateAsync(new UserRoleEntity() { Name = Roles.Admin });
-        //        }
-
-        //        var foundNormalUser = await userManager.FindByEmailAsync("normaluser@mail.com");
-
-        //        if (foundNormalUser == null)
-        //        {
-        //            UserEntity user = new UserEntity() { Email = "normaluser@mail.com", UserName = "normalUser" };
-
-        //            var saved = await userManager?.CreateAsync(user, "Test123!");
-        //            await userManager.AddToRoleAsync(user, Roles.User);
-        //        }
-
-        //        var foundAdmin = await userManager.FindByEmailAsync("administrator@mail.com");
-
-        //        if(foundAdmin == null)
-        //        {
-        //            UserEntity admin = new UserEntity() { Email = "administrator@mail.com", UserName = "administrator" };
-
-        //            var saved = await userManager?.CreateAsync(admin, "Test123!");
-        //            userManager.AddToRoleAsync(admin, Roles.Admin);
-        //        }
-        //    }
-        //}
     }
 }

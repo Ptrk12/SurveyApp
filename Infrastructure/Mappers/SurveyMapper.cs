@@ -1,4 +1,5 @@
-﻿using ApplicationCore.Models;
+﻿using ApplicationCore.Dto;
+using ApplicationCore.Models;
 using Infrastructure.Entities;
 using System;
 using System.Collections.Generic;
@@ -41,6 +42,15 @@ namespace Infrastructure.Mappers
                 Status = entity.Status,
                 UserEmail= entity.UserEmail,
                 SurveyQuestions = entity.SurveyQuestions.Select(x => FromEntityToSurveyQuestion(x)).ToList()
+            };
+        }
+
+        public static SurveyEntity FromDtoToSurveyEntity(CreateSurveyDto dto)
+        {
+            return new SurveyEntity()
+            {
+                Title = dto.Title,
+                Status = dto.Status
             };
         }
 

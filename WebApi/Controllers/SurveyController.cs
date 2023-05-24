@@ -43,5 +43,12 @@ namespace SurveyApp.Controllers
             var result = await _surveyManager.CreateNewSurvey(dto);
             return result == true? Ok() : BadRequest();   
         }
+        [HttpPut]
+        [Route("{surveyId}")]
+        public async Task<IActionResult> EditSurvey(CreateSurveyDto dto, int surveyId)
+        {
+            var result = _surveyManager.EditSurvey(dto, surveyId);
+            return result.Result==true ? Ok() : BadRequest();
+        }
     }
 }
