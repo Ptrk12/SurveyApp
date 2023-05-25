@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ApplicationCore.Dto
 {
-    public class CreateSurveyDto
+    public class CreateOrEditSurveyDto
     {
         [Required]
         public string Title { get; set; }

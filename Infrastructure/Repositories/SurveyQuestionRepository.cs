@@ -19,7 +19,7 @@ namespace Infrastructure.Repositories
             _context = context;
         }
 
-        public SurveyQuestionEntity? CreateNewSurveyQuestion(CreateSurveyQuestionDto dto)
+        public SurveyQuestionEntity? CreateNewSurveyQuestion(CreateOrEditSurveyQuestionDto dto)
         {
             var questionToAdd = new SurveyQuestionEntity()
             {
@@ -34,6 +34,17 @@ namespace Infrastructure.Repositories
             }catch (Exception) 
             {
                 return null;
+            }
+        }
+
+        public void EditSurveyQuestion(CreateOrEditSurveyQuestionDto dto, int id)
+        {
+            var surveyQuestionEntity = _context.SurveyQuestions.Where(x => x.Id == id).FirstOrDefault();
+
+            if(surveyQuestionEntity != null)
+            {
+                surveyQuestionEntity.Type = dto.Type;
+                surveyQuestionEntity.Question = dto.Question;
             }
         }
 
@@ -60,7 +71,8 @@ namespace Infrastructure.Repositories
 
     public interface ISurveyQuestionRepository : IGenericRepository<SurveyQuestionEntity, int>
     {
-        SurveyQuestionEntity? CreateNewSurveyQuestion(CreateSurveyQuestionDto dto);
+        SurveyQuestionEntity? CreateNewSurveyQuestion(CreateOrEditSurveyQuestionDto dto);
         SurveyQuestionUserAnswerEntity? SaveUserAnswer(UserAnswerDto dto, int surveyId, int surveyQuestionId, int? userId);
+        void EditSurveyQuestion(CreateOrEditSurveyQuestionDto dto, int id);
     }
 }

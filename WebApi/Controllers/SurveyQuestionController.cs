@@ -19,7 +19,7 @@ namespace SurveyApp.Controllers
 
         [HttpPost]
         [Route("{surveyId}")]
-        public async Task<IActionResult> CreateNewQuestionForSpecificSurvey(CreateSurveyQuestionDto dto,int surveyId)
+        public async Task<IActionResult> CreateNewQuestionForSpecificSurvey(CreateOrEditSurveyQuestionDto dto,int surveyId)
         {
             var result = await _surveyQuestionManager.CreateNewSurveyQuestion(dto, surveyId);
 
@@ -40,6 +40,15 @@ namespace SurveyApp.Controllers
             if (result == 0)
                 return Unauthorized();
             return Ok();
+        }
+        [HttpPut]
+        [Route("surveyId/{questionId}")]
+        [Authorize]
+        public async Task<IActionResult> EditSurveyQuestion(CreateOrEditSurveyQuestionDto dto, int surveyId, int questionId)
+        {
+            var result = await _surveyQuestionManager.EditSurveyQuestion(dto, surveyId, questionId);
+
+            return result == true ? Ok(): BadRequest();
         }
     }
 }

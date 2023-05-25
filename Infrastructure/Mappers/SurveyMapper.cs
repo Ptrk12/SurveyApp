@@ -45,7 +45,7 @@ namespace Infrastructure.Mappers
             };
         }
 
-        public static SurveyEntity FromDtoToSurveyEntity(CreateSurveyDto dto)
+        public static SurveyEntity FromDtoToSurveyEntity(CreateOrEditSurveyDto dto)
         {
             return new SurveyEntity()
             {

@@ -1,4 +1,5 @@
-﻿using Infrastructure.Entities;
+﻿using ApplicationCore.Models;
+using Infrastructure.Entities;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -92,7 +93,16 @@ namespace Infrastructure.Repositories
         public bool CheckIfUserAdmin()
         {
             var email = GetUserEmailFromTokenJwt();
-            return  email == "admin@email.com" ? true : false;
+
+            var query = (from u in _context.Users
+                         join r in _context.UserRoles
+                         on u.Id equals r.UserId
+                         where r.RoleId == 2
+                         && u.Email == email
+                         group u by u.Id into grouped
+                         select grouped.Count());
+
+            return  query.Count() > 0 ? true : false;
         }
     }
     public interface IUserRepository

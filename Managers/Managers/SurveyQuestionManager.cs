@@ -28,7 +28,7 @@ namespace Managers.Managers
             _userRepository = userRepository;
         }
 
-        public async Task<SurveyQuestion?> CreateNewSurveyQuestion(CreateSurveyQuestionDto dto, int surveyId)
+        public async Task<SurveyQuestion?> CreateNewSurveyQuestion(CreateOrEditSurveyQuestionDto dto, int surveyId)
         {
             try
             {
@@ -56,6 +56,31 @@ namespace Managers.Managers
             catch (Exception) 
             {
                 return null;
+            }
+        }
+
+        public async Task<bool> EditSurveyQuestion(CreateOrEditSurveyQuestionDto dto, int questionId, int surveyId)
+        {
+            try
+            {
+                if (dto.Type != QuestionTypes.Numeric && dto.Type != QuestionTypes.Multiple &&
+                    dto.Type != QuestionTypes.Open)
+                {
+                    return false;
+                }
+                var foundSurvey = await _surveyRepository.GetByIdAsync(surveyId);
+
+                if ((foundSurvey != null && dto != null && _userRepository.CheckIfItUserSurvey(surveyId) || _userRepository.CheckIfUserAdmin()))
+                {
+                    _surveyQuestionRepository.EditSurveyQuestion(dto, questionId);
+                    await _surveyQuestionRepository.Save();
+                    return true;
+                }
+                return false;
+            }
+            catch(Exception)
+            {
+                return false;
             }
         }
 
@@ -132,7 +157,8 @@ namespace Managers.Managers
 
     public interface ISurveyQuestionManager
     {
-        Task<SurveyQuestion?> CreateNewSurveyQuestion(CreateSurveyQuestionDto dto, int surveyId);
+        Task<SurveyQuestion?> CreateNewSurveyQuestion(CreateOrEditSurveyQuestionDto dto, int surveyId);
         Task<int> SaveUserAnswer(UserAnswerDto dto, int surveyId, int questionId);
+        Task<bool> EditSurveyQuestion(CreateOrEditSurveyQuestionDto dto, int questionId, int surveyId);
     }
 }

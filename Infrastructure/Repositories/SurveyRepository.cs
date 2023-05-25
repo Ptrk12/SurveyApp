@@ -50,7 +50,7 @@ namespace Infrastructure.Repositories
             return false;
         }
 
-        public void UpdateSurvey(CreateSurveyDto dto, int id)
+        public void UpdateSurvey(CreateOrEditSurveyDto dto, int id)
         {
             var foundSurvey = _context.Surveys.Where(x => x.Id == id).FirstOrDefault();
             if(foundSurvey != null)
@@ -65,6 +65,6 @@ namespace Infrastructure.Repositories
     {
         Task<List<SurveyEntity>> GetSurveysInclude();
         bool CheckIfSurveyHasAnswers(int surveyId);
-        void UpdateSurvey(CreateSurveyDto dto, int id);
+        void UpdateSurvey(CreateOrEditSurveyDto dto, int id);
     }
 }

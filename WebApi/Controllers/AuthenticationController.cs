@@ -55,7 +55,8 @@ public class AuthenticationController : ControllerBase
         {
             return BadRequest(result);
         }
-        await _manager.AddToRoleAsync(user, Roles.User);
+       await _manager.AddToRoleAsync(user, Roles.User);
+
         return Ok();
     }
 

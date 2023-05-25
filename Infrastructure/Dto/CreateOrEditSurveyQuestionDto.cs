@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Dto
 {
-    public class CreateSurveyQuestionDto
+    public class CreateOrEditSurveyQuestionDto
     {
         [Required]
         public string Type { get; set; }

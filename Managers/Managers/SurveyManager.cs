@@ -26,7 +26,7 @@ namespace Infrastructure.Managers
             _userRepository = userRepository;
         }
 
-        public async Task<bool> CreateNewSurvey(CreateSurveyDto survey)
+        public async Task<bool> CreateNewSurvey(CreateOrEditSurveyDto survey)
         {
             try
             {
@@ -73,7 +73,7 @@ namespace Infrastructure.Managers
                 return false;
             }
         }
-        public async Task<bool> EditSurvey(CreateSurveyDto dto, int id)
+        public async Task<bool> EditSurvey(CreateOrEditSurveyDto dto, int id)
         {
             try
             {
@@ -100,7 +100,7 @@ namespace Infrastructure.Managers
     {
         Task<List<Survey>> GetAll();
         Task<bool> RemoweSurveyById(int id);
-        Task<bool> CreateNewSurvey(CreateSurveyDto survey);
-        Task<bool> EditSurvey(CreateSurveyDto dto, int id);
+        Task<bool> CreateNewSurvey(CreateOrEditSurveyDto survey);
+        Task<bool> EditSurvey(CreateOrEditSurveyDto dto, int id);
     }
 }
