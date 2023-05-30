@@ -59,6 +59,28 @@ namespace Managers.Managers
             }
         }
 
+        public async Task<bool> DeleteSurveyQuestion(int questionId, int surveyId)
+        {
+            try
+            {
+                var isUserSurvey = _userRepository.CheckIfItUserSurvey(surveyId);
+                var isUserAdmin = _userRepository.CheckIfUserAdmin();
+
+                if(isUserSurvey == true || isUserAdmin == true)
+                {
+                     _surveyQuestionRepository.DeleteSurveyQuestion(questionId);
+                    await _surveyQuestionRepository.Save();
+
+                    return true;
+                }
+                return false;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
         public async Task<bool> EditSurveyQuestion(CreateOrEditSurveyQuestionDto dto, int questionId, int surveyId)
         {
             try
@@ -81,6 +103,76 @@ namespace Managers.Managers
             catch(Exception)
             {
                 return false;
+            }
+        }
+
+        public async Task<int> EditUserAnswer(UserAnswerDto dto, int answerId, int surveyId, int questionId)
+        {
+            try
+            {
+                var userEmail = _userRepository.GetUserEmailFromTokenJwt();
+                var userId = _userRepository.GetUserIdFromTokenJwt();
+
+                var foundSurvey = await _surveyRepository.GetByIdAsync(surveyId);
+
+                var foundQuestion = await _surveyQuestionRepository.GetByIdAsync(questionId);
+
+                var allowedDomain = String.Empty;
+
+                if (userEmail != null)
+                {
+                    allowedDomain = _userRepository.GetDomainFromEmail(foundSurvey.UserEmail);
+                }
+
+                if (foundSurvey != null)
+                {
+                    if (foundSurvey.Status == SurveyTypes.Private && userEmail == null && userId == null)
+                    {
+                        return 0;
+                    }
+                    if (foundSurvey.Status == SurveyTypes.Domain && (userEmail != null || !_userRepository.IsEmailFromDomain(userEmail, allowedDomain) && userId != null))
+                    {
+                        return 2;
+                    }
+                }
+
+                if (foundQuestion != null)
+                {
+                    if (_userRepository.CheckIfUserAdmin() == true)
+                    {
+                        _surveyQuestionRepository.EditUserAnswer(dto,answerId);
+                        await _surveyQuestionRepository.Save();
+                    }
+                    if (foundSurvey.Status == SurveyTypes.Private && userEmail != null && userId != null)
+                    {
+                        _surveyQuestionRepository.EditUserAnswer(dto, answerId);
+                        await _surveyQuestionRepository.Save();
+                    }
+                    else if (foundSurvey.Status == SurveyTypes.Domain && userEmail != null && userId != null)
+                    {
+                        if (_userRepository.IsEmailFromDomain(userEmail, allowedDomain))
+                        {
+                            _surveyQuestionRepository.EditUserAnswer(dto, answerId);
+                            await _surveyQuestionRepository.Save();
+                        }
+                    }
+                    else
+                    {
+                        _surveyQuestionRepository.EditUserAnswer(dto, answerId);
+                        await _surveyQuestionRepository.Save();
+                    }
+
+                    await _surveyQuestionRepository.Save();
+                    return 1;
+                }
+                else
+                {
+                    return -1;
+                }
+            }
+            catch (Exception)
+            {
+                return -1;
             }
         }
 
@@ -160,5 +252,7 @@ namespace Managers.Managers
         Task<SurveyQuestion?> CreateNewSurveyQuestion(CreateOrEditSurveyQuestionDto dto, int surveyId);
         Task<int> SaveUserAnswer(UserAnswerDto dto, int surveyId, int questionId);
         Task<bool> EditSurveyQuestion(CreateOrEditSurveyQuestionDto dto, int questionId, int surveyId);
+        Task<int> EditUserAnswer(UserAnswerDto dto, int answerId, int surveyId, int questionId);
+        Task<bool> DeleteSurveyQuestion(int questionId, int surveyId);
     }
 }
