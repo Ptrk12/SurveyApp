@@ -54,7 +54,7 @@ namespace SurveyApp.Controllers
         [HttpPut]
         [Route("{surveyId}/{questionId}/{answerId}")]
         [AllowAnonymous]
-        public async Task<IActionResult> EditSurveyQuestion(UserAnswerDto dto, int surveyId, int questionId, int answerId)
+        public async Task<IActionResult> EditSurveyAnswer(UserAnswerDto dto, int surveyId, int questionId, int answerId)
         {
             var result = await _surveyQuestionManager.EditUserAnswer(dto,answerId, surveyId, questionId);
 

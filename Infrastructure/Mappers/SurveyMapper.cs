@@ -29,6 +29,7 @@ namespace Infrastructure.Mappers
                 Id = entity.Id,
                 Type = entity.Type,
                 Question = entity.Question,
+                NumberOfMaxAnswers = entity.NumberOfMaxAnswers,
                 Answers = GetAnswersPerSurvey(entity.SurveyQuestionAnswers)
             };
         }
@@ -56,11 +57,12 @@ namespace Infrastructure.Mappers
 
         public static SurveyQuestionAnswerEntity FromSurveyQuestionAnswerToQuestionAnswer(SurveyQuestionUserAnswerEntity entity)
         {
-            return new SurveyQuestionAnswerEntity
+            var item = new SurveyQuestionAnswerEntity
             {
                 Id = entity.Id,
                 Answer = entity.Answer
             };
+            return item;
         }
     }
 }

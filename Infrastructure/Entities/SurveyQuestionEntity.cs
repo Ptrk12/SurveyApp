@@ -13,6 +13,7 @@ namespace Infrastructure.Entities
         public int Id { get; set; }
         public string Type { get; set; }
         public string Question { get; set; }
+        public int? NumberOfMaxAnswers { get; set; }
         public List<SurveyQuestionAnswerEntity>? SurveyQuestionAnswers { get; set; } = new List<SurveyQuestionAnswerEntity>();
         public List<SurveyEntity>? Surveys { get; set; } = new List<SurveyEntity>();
     }

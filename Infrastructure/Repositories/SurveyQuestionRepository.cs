@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -24,7 +25,8 @@ namespace Infrastructure.Repositories
             var questionToAdd = new SurveyQuestionEntity()
             {
                 Type = dto.Type,
-                Question = dto.Question
+                Question = dto.Question,
+                NumberOfMaxAnswers = dto.NumberOfMaxAnswers
             };
 
             try
@@ -55,12 +57,20 @@ namespace Infrastructure.Repositories
             {
                 surveyQuestionEntity.Type = dto.Type;
                 surveyQuestionEntity.Question = dto.Question;
+                surveyQuestionEntity.NumberOfMaxAnswers = dto.NumberOfMaxAnswers;
             }
         }
 
-        public void EditUserAnswer(UserAnswerDto dto, int surveyAnswerId)
+        public void EditUserAnswer(UserAnswerDto dto, int surveyUserAnswerId)
         {
-            var answer = _context.UserAnswers.Where(x => x.Id == surveyAnswerId).FirstOrDefault();
+            var answer = _context.UserAnswers.Where(x => x.Id == surveyUserAnswerId).FirstOrDefault();
+
+            var surveyAnswer = _context.SurveyAnswers.Where(x => x.Id == surveyUserAnswerId).FirstOrDefault();
+
+            if(surveyAnswer != null)
+            {
+                surveyAnswer.Answer = dto.Answer;
+            }
 
             if(answer != null)
             {
@@ -75,7 +85,7 @@ namespace Infrastructure.Repositories
                 SurveyId = surveyId,
                 SurveyQuestionId = surveyQuestionId,
                 UserId = userId,
-                Answer = dto.Answer
+                Answer = dto.Answer.Replace('_',' ')
             };
             try
             {

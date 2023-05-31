@@ -13,5 +13,6 @@ namespace Infrastructure.Dto
         public string Type { get; set; }
         [Required]
         public string Question { get; set; }
+        public int? NumberOfMaxAnswers { get; set; }
     }
 }

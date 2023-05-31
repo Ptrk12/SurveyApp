@@ -1,6 +1,7 @@
 ﻿using ApplicationCore.Const;
 using ApplicationCore.Models;
 using Infrastructure.Dto;
+using Infrastructure.Entities;
 using Infrastructure.Managers;
 using Infrastructure.Mappers;
 using Infrastructure.Repositories;
@@ -43,8 +44,9 @@ namespace Managers.Managers
                 await _surveyQuestionRepository.Save();
 
                 var foundSurvey = await _surveyRepository.GetByIdAsync(surveyId);
-
-                if ((foundSurvey != null && questionToAdd != null && _userRepository.CheckIfItUserSurvey(surveyId)||_userRepository.CheckIfUserAdmin()))
+                var isUserSurvey = _userRepository.CheckIfItUserSurvey(surveyId);
+                var isUserAdmin = _userRepository.CheckIfUserAdmin();
+                if ((foundSurvey != null && questionToAdd != null && isUserSurvey||isUserAdmin))
                 {
                     foundSurvey.SurveyQuestions.Add(questionToAdd);
                     await _surveyQuestionRepository.Save();
@@ -79,6 +81,33 @@ namespace Managers.Managers
             {
                 return false;
             }
+        }
+
+        public bool EditAnswerWithQuestionType(SurveyQuestionEntity foundQuestion, UserAnswerDto dto, int surveyId, int questionId, int answerId)
+        {
+            var isParsed = int.TryParse(_userRepository.GetUserIdFromTokenJwt(), out int result);
+            if (foundQuestion.Type == QuestionTypes.Numeric)
+            {
+                if (int.Parse(dto.Answer) >= 0 && int.Parse(dto.Answer) <= 10)
+                {
+                    _surveyQuestionRepository.EditUserAnswer(dto, answerId);
+                    return true;
+                }
+            }
+            else if (foundQuestion.Type == QuestionTypes.Multiple)
+            {
+                if (dto.Answer.Split("_").Length <= foundQuestion.NumberOfMaxAnswers && foundQuestion.NumberOfMaxAnswers != null)
+                {
+                    _surveyQuestionRepository.EditUserAnswer(dto, answerId);
+                    return true;
+                }
+            }
+            else
+            {
+                _surveyQuestionRepository.EditUserAnswer(dto, answerId);
+                return true;
+            }
+            return false;
         }
 
         public async Task<bool> EditSurveyQuestion(CreateOrEditSurveyQuestionDto dto, int questionId, int surveyId)
@@ -138,32 +167,35 @@ namespace Managers.Managers
 
                 if (foundQuestion != null)
                 {
+                    bool isSave = false;
                     if (_userRepository.CheckIfUserAdmin() == true)
                     {
-                        _surveyQuestionRepository.EditUserAnswer(dto,answerId);
-                        await _surveyQuestionRepository.Save();
+                        isSave = EditAnswerWithQuestionType(foundQuestion,dto, surveyId, questionId,answerId);
                     }
                     if (foundSurvey.Status == SurveyTypes.Private && userEmail != null && userId != null)
                     {
-                        _surveyQuestionRepository.EditUserAnswer(dto, answerId);
-                        await _surveyQuestionRepository.Save();
+                        isSave = EditAnswerWithQuestionType(foundQuestion, dto, surveyId, questionId, answerId);
                     }
                     else if (foundSurvey.Status == SurveyTypes.Domain && userEmail != null && userId != null)
                     {
                         if (_userRepository.IsEmailFromDomain(userEmail, allowedDomain))
                         {
-                            _surveyQuestionRepository.EditUserAnswer(dto, answerId);
-                            await _surveyQuestionRepository.Save();
+                            isSave = EditAnswerWithQuestionType(foundQuestion, dto, surveyId, questionId, answerId);
                         }
+                    }
+                    else if(foundSurvey.Status == SurveyTypes.Public )
+                    {
+                        isSave = false;
+                    }
+                    if (isSave == true)
+                    {
+                        await _surveyQuestionRepository.Save();
+                        return 1;
                     }
                     else
                     {
-                        _surveyQuestionRepository.EditUserAnswer(dto, answerId);
-                        await _surveyQuestionRepository.Save();
+                        return -1;
                     }
-
-                    await _surveyQuestionRepository.Save();
-                    return 1;
                 }
                 else
                 {
@@ -174,6 +206,42 @@ namespace Managers.Managers
             {
                 return -1;
             }
+        }
+
+        public async Task<bool> SaveAnswerWithQuestionType(SurveyQuestionEntity foundQuestion,UserAnswerDto dto, int surveyId, int questionId)
+        {
+            var isParsed = int.TryParse(_userRepository.GetUserIdFromTokenJwt(),out int result);
+            if (foundQuestion.Type == QuestionTypes.Numeric)
+            {
+                if(int.Parse(dto.Answer) >= 0 && int.Parse(dto.Answer) <= 10)
+                {
+                    var answer = _surveyQuestionRepository.SaveUserAnswer(dto, surveyId, questionId, isParsed==true?result:null);
+                    await _surveyQuestionRepository.Save();
+                    foundQuestion.SurveyQuestionAnswers.Add(SurveyMapper.FromSurveyQuestionAnswerToQuestionAnswer(answer));
+                    await _surveyQuestionRepository.Save();
+                    return true;
+                }
+            }
+            else if (foundQuestion.Type == QuestionTypes.Multiple)
+            {
+                if(dto.Answer.Split("_").Length <= foundQuestion.NumberOfMaxAnswers && foundQuestion.NumberOfMaxAnswers != null)
+                {
+                    var answer = _surveyQuestionRepository.SaveUserAnswer(dto, surveyId, questionId, isParsed == true ? result : null);
+                    await _surveyQuestionRepository.Save();
+                    foundQuestion.SurveyQuestionAnswers.Add(SurveyMapper.FromSurveyQuestionAnswerToQuestionAnswer(answer));
+                    await _surveyQuestionRepository.Save();
+                    return true;
+                }
+            }
+            else
+            {
+                var answer = _surveyQuestionRepository.SaveUserAnswer(dto, surveyId, questionId, isParsed == true ? result : null);
+                await _surveyQuestionRepository.Save();
+                foundQuestion.SurveyQuestionAnswers.Add(SurveyMapper.FromSurveyQuestionAnswerToQuestionAnswer(answer));
+                await _surveyQuestionRepository.Save();
+                return true;
+            }
+            return false;
         }
 
         public async Task<int> SaveUserAnswer(UserAnswerDto dto, int surveyId, int questionId)
@@ -208,32 +276,35 @@ namespace Managers.Managers
 
                 if(foundQuestion != null) 
                 {
+                    bool isSave = false;
+
                     if (_userRepository.CheckIfUserAdmin() == true)
                     {
-                        var answer = _surveyQuestionRepository.SaveUserAnswer(dto, surveyId, questionId, (int.Parse(_userRepository.GetUserIdFromTokenJwt())));
-                        foundQuestion.SurveyQuestionAnswers.Add(SurveyMapper.FromSurveyQuestionAnswerToQuestionAnswer(answer));
+                        isSave = await SaveAnswerWithQuestionType(foundQuestion, dto, surveyId, questionId);
                     }
                     if (foundSurvey.Status == SurveyTypes.Private && userEmail != null && userId != null)
                     {
-                        var answer = _surveyQuestionRepository.SaveUserAnswer(dto, surveyId, questionId, (int.Parse(_userRepository.GetUserIdFromTokenJwt())));
-                        foundQuestion.SurveyQuestionAnswers.Add(SurveyMapper.FromSurveyQuestionAnswerToQuestionAnswer(answer));
+                        isSave = await SaveAnswerWithQuestionType(foundQuestion, dto, surveyId, questionId);
                     }
                     else if (foundSurvey.Status == SurveyTypes.Domain && userEmail != null && userId != null)
                     {
                         if (_userRepository.IsEmailFromDomain(userEmail, allowedDomain))
                         {
-                            var answer = _surveyQuestionRepository.SaveUserAnswer(dto, surveyId, questionId, null);
-                            foundQuestion.SurveyQuestionAnswers.Add(SurveyMapper.FromSurveyQuestionAnswerToQuestionAnswer(answer));
+                            isSave = await SaveAnswerWithQuestionType(foundQuestion, dto, surveyId, questionId);
                         }
+                    }
+                    else if(foundSurvey.Status == SurveyTypes.Public)
+                    {
+                        isSave = await SaveAnswerWithQuestionType(foundQuestion, dto, surveyId, questionId);
+                    }
+                    if(isSave == true)
+                    {
+                        return 1;
                     }
                     else
                     {
-                        var answer = _surveyQuestionRepository.SaveUserAnswer(dto, surveyId, questionId, null);
-                        foundQuestion.SurveyQuestionAnswers.Add(SurveyMapper.FromSurveyQuestionAnswerToQuestionAnswer(answer));
+                        return -1;
                     }
-
-                    await _surveyQuestionRepository.Save();
-                    return 1;
                 }
                 else
                 {
@@ -252,7 +323,9 @@ namespace Managers.Managers
         Task<SurveyQuestion?> CreateNewSurveyQuestion(CreateOrEditSurveyQuestionDto dto, int surveyId);
         Task<int> SaveUserAnswer(UserAnswerDto dto, int surveyId, int questionId);
         Task<bool> EditSurveyQuestion(CreateOrEditSurveyQuestionDto dto, int questionId, int surveyId);
-        Task<int> EditUserAnswer(UserAnswerDto dto, int answerId, int surveyId, int questionId);
+        Task<int> EditUserAnswer(UserAnswerDto dto, int surveyId, int questionId, int userAnswerId);
         Task<bool> DeleteSurveyQuestion(int questionId, int surveyId);
+        Task<bool> SaveAnswerWithQuestionType(SurveyQuestionEntity foundQuestion, UserAnswerDto dto, int surveyId, int questionId);
+        bool EditAnswerWithQuestionType(SurveyQuestionEntity foundQuestion, UserAnswerDto dto, int surveyId, int questionId, int answerId);
     }
 }
