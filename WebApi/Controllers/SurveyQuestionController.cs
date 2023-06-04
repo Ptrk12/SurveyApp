@@ -25,46 +25,14 @@ namespace SurveyApp.Controllers
 
             return result != null ? Ok(result) : BadRequest();
         }
-
-        [HttpPost]
-        [Route("{surveyId}/{questionId}")]
-        [AllowAnonymous]
-        public async Task<IActionResult> SaveUserAnswer(UserAnswerDto dto, int surveyId, int questionId)
-        {
-            var result = await _surveyQuestionManager.SaveUserAnswer(dto, surveyId, questionId);
-
-            if (result == 2)
-                return Forbid();
-            if (result == -1)
-                return BadRequest();
-            if (result == 0)
-                return Unauthorized();
-            return Ok();
-        }
         [HttpPut]
         [Route("surveyId/{questionId}")]
         [Authorize]
         public async Task<IActionResult> EditSurveyQuestion(CreateOrEditSurveyQuestionDto dto, int surveyId, int questionId)
         {
-            var result = await _surveyQuestionManager.EditSurveyQuestion(dto, surveyId, questionId);
+            var result = await _surveyQuestionManager.EditSurveyQuestion(dto, questionId, surveyId);
 
             return result == true ? Ok(): BadRequest();
-        }
-
-        [HttpPut]
-        [Route("{surveyId}/{questionId}/{answerId}")]
-        [AllowAnonymous]
-        public async Task<IActionResult> EditSurveyAnswer(UserAnswerDto dto, int surveyId, int questionId, int answerId)
-        {
-            var result = await _surveyQuestionManager.EditUserAnswer(dto,answerId, surveyId, questionId);
-
-            if (result == 2)
-                return Forbid();
-            if (result == -1)
-                return BadRequest();
-            if (result == 0)
-                return Unauthorized();
-            return Ok();
         }
 
         [HttpDelete]

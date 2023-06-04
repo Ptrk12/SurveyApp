@@ -104,6 +104,19 @@ namespace Infrastructure.Repositories
 
             return  query.Count() > 0 ? true : false;
         }
+
+        public bool CheckIfUserAnswer(int surveyAnswerId)
+        {
+            var userId = GetUserIdFromTokenJwt();
+
+            var query = (from ua in _context.UserAnswers
+                        where ua.UserId == int.Parse(userId)
+                        && ua.Id== surveyAnswerId
+                        group ua by ua.Id into grouped
+                        select grouped.Count());
+
+            return query.Count() > 0? true: false;
+        }
     }
     public interface IUserRepository
     {
@@ -114,5 +127,6 @@ namespace Infrastructure.Repositories
         string RemoveDomainFromEmail(string email);
         string GetDomainFromEmail(string email);
         bool CheckIfUserAdmin();
+        bool CheckIfUserAnswer(int surveyAnswerId);
     }
 }

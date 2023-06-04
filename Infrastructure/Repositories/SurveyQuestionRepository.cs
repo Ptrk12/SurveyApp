@@ -53,48 +53,11 @@ namespace Infrastructure.Repositories
         {
             var surveyQuestionEntity = _context.SurveyQuestions.Where(x => x.Id == id).FirstOrDefault();
 
-            if(surveyQuestionEntity != null)
+            if (surveyQuestionEntity != null)
             {
                 surveyQuestionEntity.Type = dto.Type;
                 surveyQuestionEntity.Question = dto.Question;
                 surveyQuestionEntity.NumberOfMaxAnswers = dto.NumberOfMaxAnswers;
-            }
-        }
-
-        public void EditUserAnswer(UserAnswerDto dto, int surveyUserAnswerId)
-        {
-            var answer = _context.UserAnswers.Where(x => x.Id == surveyUserAnswerId).FirstOrDefault();
-
-            var surveyAnswer = _context.SurveyAnswers.Where(x => x.Id == surveyUserAnswerId).FirstOrDefault();
-
-            if(surveyAnswer != null)
-            {
-                surveyAnswer.Answer = dto.Answer;
-            }
-
-            if(answer != null)
-            {
-                answer.Answer = dto.Answer;
-            }
-        }
-
-        public SurveyQuestionUserAnswerEntity? SaveUserAnswer(UserAnswerDto dto, int surveyId, int surveyQuestionId, int? userId)
-        {
-            var answer = new SurveyQuestionUserAnswerEntity()
-            {
-                SurveyId = surveyId,
-                SurveyQuestionId = surveyQuestionId,
-                UserId = userId,
-                Answer = dto.Answer.Replace('_',' ')
-            };
-            try
-            {
-                _context.UserAnswers.Add(answer);
-                return answer;
-            }
-            catch (Exception)
-            {
-                return null;
             }
         }
     }
@@ -102,9 +65,7 @@ namespace Infrastructure.Repositories
     public interface ISurveyQuestionRepository : IGenericRepository<SurveyQuestionEntity, int>
     {
         SurveyQuestionEntity? CreateNewSurveyQuestion(CreateOrEditSurveyQuestionDto dto);
-        SurveyQuestionUserAnswerEntity? SaveUserAnswer(UserAnswerDto dto, int surveyId, int surveyQuestionId, int? userId);
         void EditSurveyQuestion(CreateOrEditSurveyQuestionDto dto, int id);
-        void EditUserAnswer(UserAnswerDto dto, int surveyAnswerId);
         void DeleteSurveyQuestion(int surveyQuestionId);
     }
 }
