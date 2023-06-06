@@ -1,4 +1,5 @@
 ﻿
+using ApplicationCore.Const;
 using ApplicationCore.Dto;
 using ApplicationCore.Models;
 using Infrastructure.Entities;
@@ -30,12 +31,19 @@ namespace Infrastructure.Managers
         {
             try
             {
+                if (survey.Status != SurveyTypes.Public.ToString().ToLower() &&
+                    survey.Status != SurveyTypes.Private.ToString().ToLower() &&
+                    survey.Status != SurveyTypes.Domain.ToString().ToLower())
+                {
+                    return false;
+                }
+                var email = _userRepository.GetUserEmailFromTokenJwt();
                 var entityToAdd = new SurveyEntity()
                 {
                     Title = survey.Title,
                     Status = survey.Status,
                     UserId = int.Parse(_userRepository.GetUserIdFromTokenJwt()),
-                    UserEmail = _userRepository.GetUserEmailFromTokenJwt(),
+                    UserEmail = email
                 };
                 await _surveyRepository.Add(entityToAdd);
                 await _surveyRepository.Save();
@@ -77,6 +85,13 @@ namespace Infrastructure.Managers
         {
             try
             {
+                if (dto.Status != SurveyTypes.Public.ToString().ToLower() &&
+                   dto.Status != SurveyTypes.Private.ToString().ToLower() &&
+                   dto.Status != SurveyTypes.Domain.ToString().ToLower())
+                {
+                    return false;
+                }
+
                 var itIsUserSurvey = _userRepository.CheckIfItUserSurvey(id);
                 var surveyHasAnswers = _surveyRepository.CheckIfSurveyHasAnswers(id);
                 var isAdmin = _userRepository.CheckIfUserAdmin();

@@ -24,7 +24,7 @@ namespace Infrastructure
             base.OnConfiguring(optionsBuilder);
 
             optionsBuilder.UseSqlServer(
-                "Data Source=DESKTOP-QR36UPA;Initial Catalog=SurveyApp;Integrated Security=True;Pooling=False;TrustServerCertificate=True");
+                "Data Source=DESKTOP-BORRVIJ;Initial Catalog=SurveyApp;Integrated Security=True;Pooling=False;TrustServerCertificate=True");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

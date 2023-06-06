@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "dvPv+EGPGq5B17pym1aAl1CXsDZuIdjYqcXW+WydZ13DPk0l63EkBOm/UYS9LjPdybBAbStEyYFcWsvNDXC+Mw==",
+  "dgSpecHash": "PuRyZlU8imH6rRYLjvU/aexPYsduWwfslANEcVa+7O/pF5MThrqCAOowNEkEVq9lOYMq1p9kutPXSEes0LcVBg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Admin\\Desktop\\survey\\SurveyApp\\ApplicationCore\\ApplicationCore.csproj",
+  "projectFilePath": "C:\\Users\\Admin\\Desktop\\SurveyApp\\ApplicationCore\\ApplicationCore.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Admin\\.nuget\\packages\\microsoft.entityframeworkcore\\7.0.5\\microsoft.entityframeworkcore.7.0.5.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\microsoft.entityframeworkcore.abstractions\\7.0.5\\microsoft.entityframeworkcore.abstractions.7.0.5.nupkg.sha512",
