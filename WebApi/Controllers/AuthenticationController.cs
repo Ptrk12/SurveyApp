@@ -17,7 +17,6 @@ public class AuthenticationController : ControllerBase
 {
     private readonly UserManager<UserEntity> _manager;
     private readonly JwtSettings _jwtSettings;
-    private readonly IMapper _mapper;
 
     public AuthenticationController(UserManager<UserEntity> manager
         , IConfiguration configuration
@@ -27,6 +26,10 @@ public class AuthenticationController : ControllerBase
         _jwtSettings = jwtSettings;
     }
 
+    /// <summary>
+    /// Login
+    /// </summary>
+    /// <returns></returns>
     [HttpPost("login")]
     [AllowAnonymous]
     public async Task<IActionResult> Authenticate(LoginUserDto user)
@@ -43,6 +46,10 @@ public class AuthenticationController : ControllerBase
         return Unauthorized();
     }
 
+    /// <summary>
+    /// Register new account
+    /// </summary>
+    /// <returns></returns>
     [HttpPost("register")]
     [AllowAnonymous]
     public async Task<IActionResult> Register(RegisterUserDto userDto)

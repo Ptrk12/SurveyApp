@@ -20,6 +20,10 @@ namespace SurveyApp.Controllers
             _surveyManager = userManager;
         }
 
+        /// <summary>
+        /// Get all surveys
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> GetAll()
@@ -28,6 +32,11 @@ namespace SurveyApp.Controllers
             return Ok(entities);
         }
 
+        /// <summary>
+        /// Delete survey by Id
+        /// </summary>
+        /// <param name="surveyId">survey id</param>
+        /// <returns></returns>
         [HttpDelete]
         [Route("{surveyId}")]
         [Authorize(Policy = "Bearer")]
@@ -37,12 +46,22 @@ namespace SurveyApp.Controllers
             return deleted == true ? Ok(deleted) : BadRequest();
         }
 
+        /// <summary>
+        /// Create new survey
+        /// </summary>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> CreateNewSurvey(CreateOrEditSurveyDto dto)
         {
             var result = await _surveyManager.CreateNewSurvey(dto);
             return result == true? Ok() : BadRequest();   
         }
+
+        /// <summary>
+        /// Edit existing survey
+        /// </summary>
+        /// <param name="surveyId">survey Id</param>
+        /// <returns></returns>
         [HttpPut]
         [Route("{surveyId}")]
         public async Task<IActionResult> EditSurvey(CreateOrEditSurveyDto dto, int surveyId)

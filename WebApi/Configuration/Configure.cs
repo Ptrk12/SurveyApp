@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
+using System.Reflection;
 using System.Text;
 
 namespace SurveyApp.Configuration
@@ -114,6 +115,8 @@ namespace SurveyApp.Configuration
         {
             services.AddSwaggerGen(options =>
             {
+                options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory,
+                    $"{Assembly.GetExecutingAssembly().GetName().Name}.xml"));
                 options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     Description = @"JWT Authorization header using the Bearer scheme.

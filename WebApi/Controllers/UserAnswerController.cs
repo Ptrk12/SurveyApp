@@ -17,6 +17,11 @@ namespace SurveyApp.Controllers
             _userAnswerManager = userAnswerManager;
         }
 
+        /// <summary>
+        /// Delete user answer
+        /// </summary>
+        /// <param name="userAnswerId">user answer id</param>
+        /// <returns></returns>
         [HttpDelete]
         [Route("/{userAnswerId}")]
         [Authorize]
@@ -27,7 +32,13 @@ namespace SurveyApp.Controllers
             return result == true? Ok(result) : BadRequest();
         }
 
-
+        /// <summary>
+        /// Edit user answer
+        /// </summary>
+        /// <param name="surveyId">survey id</param>
+        /// <param name="questionId">question id</param>
+        /// <param name="answerId">answer id</param>
+        /// <returns></returns>
         [HttpPut]
         [Route("{surveyId}/{questionId}/{answerId}")]
         [AllowAnonymous]
@@ -44,6 +55,12 @@ namespace SurveyApp.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Add user answer to survey question
+        /// </summary>
+        /// <param name="surveyId">survey id</param>
+        /// <param name="questionId">question id</param>
+        /// <returns></returns>
         [HttpPost]
         [Route("{surveyId}/{questionId}")]
         [AllowAnonymous]
